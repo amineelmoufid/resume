@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Editor — Resume Layout Studio</title>
+    <link rel="stylesheet" href="visual-editor.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="app">
+        <!-- LEFT PANEL -->
+        <aside id="left-panel" class="panel panel-left">
+            <div class="panel-header">
+                <h2>Layout</h2>
+                <button id="collapse-left" class="collapse-btn" title="Collapse panel">◀</button>
+            </div>
+            <div class="panel-body" id="layout-controls">
+                <!-- Populated by JS -->
+            </div>
+        </aside>
+
+        <!-- CENTER PREVIEW -->
+        <main class="center-stage">
+            <div class="stage-toolbar">
+                <div class="stage-title">
+                    <span class="dot green"></span>
+                    <span id="sync-status">Connected</span>
+                    <select id="page-switcher" style="margin-left: 10px; padding: 2px 5px; border-radius: 4px; border: 1px solid #ccc;">
+                        <option value="resume">Main Resume</option>
+                        <option value="bento">Bento Portfolio</option>
+                    </select>
+                </div>
+                <div class="stage-actions">
+                    <button id="zoom-in-btn" title="Zoom In">+</button>
+                    <span id="zoom-level">100%</span>
+                    <button id="zoom-out-btn" title="Zoom Out">−</button>
+                    <button id="zoom-fit-btn" title="Fit to View">⊡</button>
+                </div>
+                <div class="stage-links">
+                    <a href="data-editor.html">Data Editor</a>
+                    <a href="../tabs/profile.html" target="_blank">Live Resume</a>
+                </div>
+            </div>
+            <div id="preview-viewport" class="preview-viewport">
+                <div id="resume-preview" class="resume-preview">
+                    <div id="zoom-scaler" class="zoom-scaler">
+                        <!-- The scaled resume replica is rendered here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL -->
+        <aside id="right-panel" class="panel panel-right">
+            <div class="panel-header">
+                <h2 id="right-panel-title">Select a Section</h2>
+                <button id="collapse-right" class="collapse-btn" title="Collapse panel">▶</button>
+            </div>
+            <div class="panel-body" id="content-editor">
+                <div class="empty-state">
+                    <div class="empty-icon">✦</div>
+                    <p>Click any section in the preview to edit its content here.</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- BOTTOM TOOLBAR -->
+        <footer class="bottom-bar">
+            <div class="bar-section" id="typography-controls">
+                <!-- Populated by JS -->
+            </div>
+            <div class="bar-section bar-status">
+                <span id="save-status" class="status-pill">All synced</span>
+            </div>
+        </footer>
+        <!-- Floating reopen buttons for collapsed panels -->
+        <button class="reopen-btn left" onclick="document.getElementById('app').classList.remove('left-collapsed')">▶</button>
+        <button class="reopen-btn right" onclick="document.getElementById('app').classList.remove('right-collapsed')">◀</button>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="importmap">
+        {
+          "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/database": "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"
+          }
+        }
+    </script>
+    <script type="module" src="visual-editor.js"></script>
+
+
+</body>
+</html>

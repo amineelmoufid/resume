@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amine OS v18.0 | High-Fidelity Logic HUD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f8f6; /* Bone White */
+            --fg: #0a0a0a; /* Deep Ink */
+            --line: rgba(10, 10, 10, 0.12);
+            --line-strong: rgba(10, 10, 10, 0.4);
+            --accent: #000;
+            --font-mono: 'JetBrains Mono', monospace;
+            --border-width: 1.5px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            background-color: var(--bg);
+            background-image: 
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px);
+            background-size: 80px 80px;
+            color: var(--fg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- SYSTEM OVERLAYS (DENSITY) --- */
+        .sys-data {
+            position: fixed; font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+            z-index: 2000; pointer-events: none; text-transform: uppercase; letter-spacing: 1px;
+            background: var(--fg); color: var(--bg); padding: 4px 8px;
+        }
+        .data-tl { top: 0; left: 0; }
+        .data-tr { top: 0; right: 0; }
+        .data-bl { bottom: 0; left: 0; }
+        .data-br { bottom: 0; right: 0; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 160px 40px 300px 40px; }
+
+        /* --- HEADER --- */
+        .header {
+            border-bottom: 2px solid var(--fg);
+            padding-bottom: 80px;
+            margin-bottom: 160px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .header h1 { font-size: 110px; font-weight: 800; letter-spacing: -8px; line-height: 0.8; }
+        .header-meta { text-align: right; font-family: var(--font-mono); font-size: 11px; font-weight: 700; line-height: 2.2; text-transform: uppercase; }
+
+
+        /* --- ADVANTAGE GRID --- */
+        .advantage-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
+        }
+
+
+        /* --- COMPONENT BOX (DENSITY) --- */
+
+        .advantage-box {
+            background: var(--bg);
+            padding: 80px 60px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            transition: background 0.3s;
+        }
+        .advantage-box:hover { background: #fff; }
+        
+        .box-index {
+            position: absolute; top: 20px; left: 20px;
+            font-family: var(--font-mono); font-size: 10px; font-weight: 700; opacity: 0.3;
+        }
+
+        .viz-area {
+            height: 120px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-wrap { display: flex; flex-direction: column; gap: 8px; }
+        .message-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; opacity: 0.4; text-transform: uppercase; letter-spacing: 2px; }
+        .message {
+            font-size: 18px; font-weight: 700; letter-spacing: -0.5px;
+            transition: color 0.4s;
+        }
+
+        /* --- STRENGTHENED ANIMATIONS --- */
+
+        /* 01: Thinking Space */
+        .think-bar { width: 100%; height: 2px; background: var(--line); position: relative; }
+        .think-cursor { position: absolute; left: 0; top: -10px; height: 20px; width: 2px; background: var(--fg); opacity: 0; }
+        .think-structure { position: absolute; right: 0; width: 50%; height: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; opacity: 0; top: -20px; }
+        .think-structure div { border: 2px solid var(--fg); height: 100%; }
+        .advantage-box:hover .think-cursor { animation: think-move 2s linear forwards; opacity: 1; }
+        .advantage-box:hover .think-structure { animation: fade-in 0.3s 2s forwards; }
+        @keyframes think-move { 0% { left: 0; } 90% { left: 100%; opacity: 1; } 100% { left: 100%; opacity: 0; } }
+        @keyframes fade-in { to { opacity: 1; } }
+
+        /* 02: Compression */
+        .compress-input { width: 80px; height: 80px; border: 2px solid var(--line-strong); display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .compress-input div { background: var(--line-strong); }
+        .filter-gap { width: 2px; height: 120px; background: var(--fg); margin: 0 60px; }
+        .compress-output { width: 24px; height: 24px; background: var(--fg); opacity: 0; }
+        .advantage-box:hover .compress-output { animation: fade-in 0.5s 0.8s forwards; }
+
+        /* 04: Survivor */
+        .perf-stream { display: flex; gap: 20px; position: absolute; left: 0; }
+        .perf-idea { width: 40px; height: 2px; background: var(--line-strong); }
+        .perf-filter { width: 2px; height: 60px; background: var(--fg); margin: 0 80px; }
+        .perf-survivor { width: 80px; height: 3px; background: var(--fg); opacity: 0; }
+        .advantage-box:hover .perf-survivor { animation: fade-in 0.3s 1s forwards; }
+
+        /* 08: Elimination */
+        .elim-grid { display: grid; grid-template-columns: repeat(4, 30px); gap: 15px; }
+        .elim-item { width: 100%; height: 30px; border: 2px solid var(--fg); opacity: 1; transition: opacity 0.5s; }
+        .advantage-box:hover .elim-item:not(.final) { opacity: 0; }
+        .final { border-width: 4px; }
+
+        /* 15: Chaos/Order */
+        .chaos-svg { width: 120px; height: 60px; }
+        .chaos-svg line { stroke: var(--line-strong); stroke-width: 1.5; }
+        .chaos-svg rect { fill: none; stroke: var(--fg); stroke-width: 3; }
+
+        /* 20: HERO - Friction Eraser V2 */
+        .hero { margin-top: 0; padding: 180px 0; border-top: 4px solid var(--fg); background: #fff; text-align: center; }
+        .hero-viz { height: 180px; width: 100%; max-width: 800px; margin: 0 auto; position: relative; border-bottom: 2px solid var(--line); overflow: hidden; }
+        .obstacle { position: absolute; width: 30px; height: 30px; background: var(--line-strong); bottom: 0; }
+        .eraser { position: absolute; width: 80px; height: 4px; background: var(--fg); bottom: 15px; left: -10%; transition: left 1.8s cubic-bezier(0.65, 0, 0.35, 1); box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .hero-viz:hover .eraser { left: 110%; }
+        .hero-viz:hover .obstacle { opacity: 0; transition: opacity 0.1s; }
+
+        /* Ticker Intense */
+        .ticker {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 100px;
+            background: var(--fg); color: var(--bg); border-top: 1px solid var(--line);
+            display: flex; align-items: center; padding: 0 60px; font-family: var(--font-mono); 
+            font-size: 11px; font-weight: 700; overflow: hidden; z-index: 1000;
+        }
+        .ticker-inner { display: flex; gap: 100px; white-space: nowrap; animation: ticket-scroll 40s linear infinite; }
+        @keyframes ticket-scroll { from { transform: translateX(10%); } to { transform: translateX(-190%); } }
+
+        /* --- BENTO GRID SYSTEM --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-flow: dense;
+            gap: 24px;
+            width: 100%;
+            max-width: 1100px;
+            margin: 60px auto 160px auto;
+        }
+
+        .system-status-panel, .lang-levels-panel, .ctrl-panel, .dec-panel, .id-panel, .soc-panel, .comm-panel, .sys-flow-panel {
+            background-color: #050505 !important; /* Slightly elevated from true black */
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Bento card outline */
+            padding: 50px 40px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .system-status-panel .caption,
+        .lang-levels-panel .caption,
+        .ctrl-panel .caption,
+        .dec-panel .caption,
+        .id-panel .caption,
+        .soc-panel .caption,
+        .comm-panel .caption,
+        .sys-flow-panel .caption {
+            margin-top: auto !important;
+            padding-top: 50px;
+        }
+
+        .bento-tall { grid-row: span 2; }
+        .bento-wide { grid-column: span 2; }
+
+        /* --- SYSTEM STATUS PANEL --- */
+        .system-status-panel {
+            background-color: #030303;
+            color: #efefef;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, sans-serif;
+            width: 100%;
+            max-width: 480px;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+
+        .system-status-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .system-status-panel .sys-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .system-status-panel .sys-row:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .system-status-panel .sys-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .system-status-panel .sys-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+            margin: 0 20px;
+        }
+
+        .system-status-panel .sys-toggle {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            box-sizing: border-box;
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid transparent;
+        }
+
+        .system-status-panel .sys-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .system-status-panel .sys-toggle.on, .system-status-panel .sys-toggle.high {
+            background-color: #ffffff;
+            border-color: #ffffff;
+        }
+        .system-status-panel .sys-toggle.on::after, .system-status-panel .sys-toggle.high::after {
+            left: 23px;
+            background-color: #000000;
+        }
+
+        .system-status-panel .sys-toggle.off {
+            background-color: transparent;
+            border-color: #383838;
+        }
+        .system-status-panel .sys-toggle.off::after {
+            left: 3px;
+            background-color: #383838;
+        }
+
+        .system-status-panel .sys-toggle.low {
+            background-color: transparent;
+            border-color: #8c8c8c;
+        }
+        .system-status-panel .sys-toggle.low::after {
+            left: 13px;
+            background-color: #8c8c8c;
+        }
+
+        .system-status-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            margin-top: 70px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- LANGUAGE LEVELS PANEL --- */
+        .lang-levels-panel {
+            background-color: #030303;
+            color: #efefef;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, sans-serif;
+            width: 100%;
+            max-width: 480px;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            margin: 40px auto 40px auto;
+        }
+
+        .lang-levels-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .lang-levels-panel .lang-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .lang-levels-panel .lang-row:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .lang-levels-panel .lang-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            width: 75px;
+            flex-shrink: 0;
+        }
+
+        .lang-levels-panel .lang-bar-container {
+            flex-grow: 1;
+            margin: 0 30px 0 20px;
+            height: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lang-levels-panel .lang-bar-outline {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 1px solid #383838;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+
+        .lang-levels-panel .lang-bar-fill {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            z-index: 3;
+        }
+
+        .lang-levels-panel .lang-bar-extension {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: calc(100% + 20px);
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.15); /* Faint continuation line */
+            z-index: 2;
+            transform: translateY(-50%);
+        }
+
+        .lang-levels-panel .lang-value {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: #888888;
+            width: 35px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .lang-levels-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            margin-top: 70px;
+            letter-spacing: 0.5px;
+        }
+
+
+
+        /* --- CONTROL / RELEASE PANEL --- */
+        .ctrl-panel {
+            background-color: #030303;
+            color: #efefef;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, sans-serif;
+            width: 100%;
+            max-width: 480px;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            margin: 40px auto 40px auto;
+        }
+
+        .ctrl-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .ctrl-panel .ctrl-wrapper {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            margin: auto 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ctrl-panel .ctrl-holding {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            width: 70%;
+            height: 14px;
+            background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0, rgba(255, 255, 255, 0.2) 1px, transparent 1px, transparent 4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-right: none;
+            box-sizing: border-box;
+            transform: translateY(-50%);
+        }
+
+        .ctrl-panel .ctrl-gate {
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            width: 3px;
+            height: 24px;
+            background-color: #ffffff;
+            transform: translateY(-50%);
+        }
+
+        .ctrl-panel .ctrl-release {
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            right: 5%;
+            height: 3px;
+            background-color: #ffffff;
+            transform: translateY(-50%);
+        }
+
+        .ctrl-panel .ctrl-lbl-hold {
+            position: absolute;
+            bottom: -22px;
+            left: 5%;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: #666666;
+            font-family: monospace;
+        }
+
+        .ctrl-panel .ctrl-lbl-release {
+            position: absolute;
+            bottom: -22px;
+            left: 78%;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: #efefef;
+            font-family: monospace;
+            font-weight: 600;
+        }
+
+        .ctrl-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            margin-top: 70px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- DECISION SYSTEM PANEL --- */
+        .dec-panel {
+            background-color: #030303;
+            color: #efefef;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, sans-serif;
+            width: 100%;
+            max-width: 480px;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            margin: 40px auto 40px auto;
+        }
+
+        .dec-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .dec-panel .dec-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dec-panel .dec-row:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .dec-panel .dec-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .dec-panel .dec-bar-wrapper {
+            flex-grow: 1;
+            margin: 0 0px 0 20px;
+            height: 6px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .dec-panel .dec-long-bar {
+            width: 100%;
+            height: 6px;
+            border: 1px solid #383838;
+            border-right: none;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .dec-panel .dec-long-bar .dec-fill {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 93%;
+            background-color: #ffffff;
+            box-sizing: border-box;
+        }
+
+        .dec-panel .dec-short-bar {
+            width: 38%;
+            height: 6px;
+            background-color: #ffffff;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .dec-panel .dec-short-bar .dec-cap {
+            position: absolute;
+            right: -16px;
+            top: -1px;
+            width: 4px;
+            height: 7px;
+            border-bottom: 1.5px solid #ffffff;
+            border-right: 1.5px solid #ffffff;
+            transform: rotate(45deg);
+        }
+
+        .dec-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            margin-top: 70px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- IDENTITY PANEL --- */
+        .id-panel {
+            background-color: #030303;
+            color: #efefef;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, sans-serif;
+            width: 100%;
+            max-width: 480px;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            margin: 40px auto 40px auto;
+        }
+
+        .id-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .id-panel .id-diagram-wrapper {
+            position: relative;
+            width: 200px;
+            margin: 0 auto;
+        }
+
+        .id-panel .id-diagram {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .id-panel .id-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .id-panel .id-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #888888;
+            width: 100px;
+            text-align: center;
+        }
+
+        .id-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            margin-top: 70px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- SOCIAL BATTERY PANEL --- */
+        .soc-panel {
+            background-color: #030303;
+            color: #efefef;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Helvetica, sans-serif;
+            width: 100%;
+            max-width: 480px;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            margin: 40px auto 160px auto;
+        }
+
+        .soc-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .soc-panel .soc-wrapper {
+            width: fit-content;
+            margin: auto auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .soc-panel .soc-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #888888;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .soc-panel .soc-bar {
+            width: 140px;
+            height: 40px;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+            box-sizing: border-box;
+            position: relative;
+            padding: 2.5px;
+        }
+
+        .soc-panel .soc-fill {
+            height: 100%;
+            width: 8%;
+            background-color: #ffffff;
+            border-radius: 1.5px;
+        }
+
+        .soc-panel .soc-output-line {
+            position: absolute;
+            top: 50%;
+            right: -6px;
+            width: 6px;
+            height: 14px;
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-50%);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .soc-panel .soc-output-dot {
+            display: none;
+        }
+
+        .soc-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            margin-top: 70px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- COMMUNICATION PANEL --- */
+        .comm-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .comm-panel .comm-wrapper {
+            margin: auto auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: fit-content;
+        }
+
+        .comm-panel .comm-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #888888;
+            margin-bottom: 20px;
+        }
+
+        .comm-panel .signal-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            height: 44px;
+        }
+
+        .comm-panel .bar {
+            width: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .comm-panel .bar.solid {
+            background-color: #ffffff;
+            border-color: #ffffff;
+        }
+
+        .comm-panel .bar.empty {
+            background-color: transparent;
+        }
+
+        .comm-panel .bar.partial {
+            background-color: transparent;
+        }
+
+        .comm-panel .bar.partial .fill {
+            position: absolute;
+            bottom: -1px; left: -1px; right: -1px;
+            height: 50%;
+            background-color: #ffffff;
+            border: 1px solid #ffffff;
+            box-sizing: border-box;
+        }
+
+        .comm-panel .bar-1 { height: 12px; }
+        .comm-panel .bar-2 { height: 20px; }
+        .comm-panel .bar-3 { height: 28px; }
+        .comm-panel .bar-4 { height: 36px; }
+        .comm-panel .bar-5 { height: 44px; }
+
+        .comm-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- SYSTEMS FLOW PANEL --- */
+        .sys-flow-panel .title {
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #777777;
+            margin-bottom: 60px;
+            margin-right: -5px;
+        }
+
+        .sys-flow-panel .flow-container {
+            margin: auto auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sys-flow-panel .sys-diag {
+            display: block;
+            width: 100%;
+            max-width: 440px;
+            height: auto;
+        }
+
+        .sys-flow-panel .flow-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            fill: #888888;
+        }
+
+        .sys-flow-panel .caption {
+            text-align: center;
+            font-size: 10px;
+            color: #555555;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- RESPONSIVE OVERRIDES (Bottom for Specificity) --- */
+        @media (max-width: 900px) {
+            .header h1 { font-size: 80px; letter-spacing: -4px; }
+            .container { padding: 120px 30px 200px 30px; }
+            .header { margin-bottom: 80px; }
+            .advantage-grid { grid-template-columns: 1fr; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-wide, .bento-tall { grid-column: span 1; grid-row: span 1; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 64px; }
+            .header { flex-direction: column; gap: 40px; padding-bottom: 40px; margin-bottom: 60px; }
+            .header-meta { text-align: left; }
+            .header-meta p { line-height: 1.5; font-size: 10px; }
+            .sys-data { font-size: 7px; padding: 2px 6px; }
+            .ticker { height: 70px; padding: 0 30px; }
+            .system-status-panel, .lang-levels-panel, .ctrl-panel, .dec-panel, .id-panel, .soc-panel, .comm-panel, .sys-flow-panel {
+                padding: 36px 24px !important;
+            }
+            .system-status-panel .sys-line { margin: 0 10px; }
+            .advantage-box { padding: 40px 30px; }
+            .viz-area { height: 80px; }
+            .message { font-size: 16px; }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 { font-size: 48px; letter-spacing: -2px; }
+            .container { padding: 80px 16px 120px 16px; }
+            .sys-data.data-tr, .sys-data.data-br { display: none; }
+            .ticker-inner { gap: 40px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sys-data data-tl">SYS_ID: AMINE_ELD // MODEL: 18.0_HIGH_FIDELITY</div>
+    <div class="sys-data data-tr">COORD_Z: SCANNING_LOGIC...</div>
+    <div class="sys-data data-bl">BIT_RATE: MAX_PRECISION // ERROR: 0.00%</div>
+    <div class="sys-data data-br">HUD_MODE: SYSTEM_ADVANTAGE // © 2025</div>
+
+    <div class="container">
+        
+        <header class="header">
+            <div>
+                <h1>Amine OS</h1>
+                <p style="font-size: 20px; opacity: 1; font-weight: 800; margin-top: 20px; letter-spacing: 4px; text-transform: uppercase;">The Advantage Manifest</p>
+            </div>
+            <div class="header-meta">
+                <p>STATUS: OPERATIONAL_GENIUS</p>
+                <p>ARCHITECTURE: STRATEGIC_CREATIVE</p>
+                <p id="clock">23:10:00</p>
+            </div>
+        </header>
+
+        <!-- BENTO LAYOUT WRAPPER -->
+        <div class="bento-grid">
+            <!-- SYSTEM STATUS PANEL -->
+            <div class="system-status-panel bento-tall">
+            <div class="title">SYSTEM STATUS</div>
+
+            <div class="sys-row">
+                <div class="sys-label">OVERTHINKING</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle on"></div>
+            </div>
+
+            <div class="sys-row">
+                <div class="sys-label">CLARITY</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle on"></div>
+            </div>
+
+            <div class="sys-row">
+                <div class="sys-label">SPEED</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle off"></div>
+            </div>
+
+            <div class="sys-row">
+                <div class="sys-label">PRECISION</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle on"></div>
+            </div>
+
+            <div class="sys-row">
+                <div class="sys-label">SOCIAL ENERGY</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle low"></div>
+            </div>
+
+            <div class="sys-row">
+                <div class="sys-label">COLLABORATION</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle high"></div>
+            </div>
+
+            <div class="sys-row">
+                <div class="sys-label">PERFECTIONISM</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle on"></div>
+            </div>
+
+            <div class="sys-row">
+                <div class="sys-label">SHIPPING</div>
+                <div class="sys-line"></div>
+                <div class="sys-toggle on"></div>
+            </div>
+
+            <div class="caption">I don’t remove contradictions, I manage them.</div>
+        </div>
+
+        <!-- LANGUAGE LEVELS PANEL -->
+        <div class="lang-levels-panel">
+            <div class="title">LANGUAGE LEVELS</div>
+
+            <div class="lang-row">
+                <div class="lang-label">ARABIC</div>
+                <div class="lang-bar-container">
+                    <div class="lang-bar-outline"></div>
+                    <div class="lang-bar-fill" style="width: 100%;"></div>
+                </div>
+                <div class="lang-value">100%</div>
+            </div>
+
+            <div class="lang-row">
+                <div class="lang-label">FRENCH</div>
+                <div class="lang-bar-container">
+                    <div class="lang-bar-extension"></div>
+                    <div class="lang-bar-outline"></div>
+                    <div class="lang-bar-fill" style="width: 68%;"></div>
+                </div>
+                <div class="lang-value">68%</div>
+            </div>
+
+            <div class="lang-row">
+                <div class="lang-label">ENGLISH</div>
+                <div class="lang-bar-container">
+                    <div class="lang-bar-extension"></div>
+                    <div class="lang-bar-outline"></div>
+                    <div class="lang-bar-fill" style="width: 65%;"></div>
+                </div>
+                <div class="lang-value">65%</div>
+            </div>
+
+            <div class="caption">Fluent in thought, growing in expression.</div>
+        </div>
+
+
+        <!-- CONTROL / RELEASE PANEL -->
+        <div class="ctrl-panel bento-wide">
+            <div class="title">CONTROL / RELEASE</div>
+
+            <div class="ctrl-wrapper">
+                <div class="ctrl-holding"></div>
+                <div class="ctrl-gate"></div>
+                <div class="ctrl-release"></div>
+
+                <div class="ctrl-lbl-hold">CONTROL</div>
+                <div class="ctrl-lbl-release">RELEASE</div>
+            </div>
+
+            <div class="caption">I control deeply, but I choose when to let go.</div>
+        </div>
+
+        <!-- DECISION SYSTEM PANEL -->
+        <div class="dec-panel">
+            <div class="title">DECISION SYSTEM</div>
+
+            <div class="dec-row">
+                <div class="dec-label">OVER-ANALYSIS</div>
+                <div class="dec-bar-wrapper">
+                    <div class="dec-long-bar">
+                        <div class="dec-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dec-row">
+                <div class="dec-label">EXECUTION</div>
+                <div class="dec-bar-wrapper">
+                    <div class="dec-short-bar">
+                        <div class="dec-cap"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="caption">I analyze deeply, but I act decisively.</div>
+        </div>
+
+        <!-- IDENTITY PANEL -->
+        <div class="id-panel bento-tall">
+            <div class="title">IDENTITY</div>
+            
+            <div class="id-diagram-wrapper">
+                <svg viewBox="0 0 200 200" class="id-diagram">
+                    <defs>
+                        <clipPath id="circleClip">
+                            <circle cx="100" cy="100" r="90" />
+                        </clipPath>
+                        <pattern id="gridPattern" width="12" height="12" patternUnits="userSpaceOnUse">
+                            <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#444444" stroke-width="1" />
+                        </pattern>
+                        <clipPath id="rightHalfClip">
+                            <rect x="100" y="0" width="100" height="200" />
+                        </clipPath>
+                    </defs>
+
+                    <!-- Left Half: Grid -->
+                    <rect x="0" y="0" width="100" height="200" fill="url(#gridPattern)" clip-path="url(#circleClip)" />
+
+                    <!-- Right Half: Fluid Waves -->
+                    <g clip-path="url(#circleClip)">
+                        <g clip-path="url(#rightHalfClip)">
+                            <path d="M 100,60 C 140,60 140,160 200,160" fill="none" stroke="#dddddd" stroke-width="1.5" />
+                            <path d="M 100,140 C 130,200 160,40 200,80" fill="none" stroke="#dddddd" stroke-width="1.5" />
+                        </g>
+                    </g>
+
+                    <!-- Outer Boundary & Center Split -->
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="#ffffff" stroke-width="1.5" />
+                    <line x1="100" y1="10" x2="100" y2="190" stroke="#ffffff" stroke-width="1.5" />
+                </svg>
+
+                <div class="id-labels">
+                    <div class="id-label">LOGIC</div>
+                    <div class="id-label">CREATION</div>
+                </div>
+            </div>
+
+            <div class="caption">I am structured, but I create freely.</div>
+        </div>
+
+        <!-- SOCIAL BATTERY PANEL -->
+        <div class="soc-panel">
+            <div class="title">SOCIAL BATTERY</div>
+            
+            <div class="soc-wrapper">
+                <div class="soc-label">LEVEL &mdash; <span style="color: #ffffff;">5%</span></div>
+                <div class="soc-bar">
+                    <div class="soc-fill"></div>
+                    <div class="soc-output-line"></div>
+                    <div class="soc-output-dot"></div>
+                </div>
+            </div>
+
+            <div class="caption">I stay quiet, but I build strong with others.</div>
+        </div>
+
+        <!-- COMMUNICATION PANEL -->
+        <div class="comm-panel">
+            <div class="title">COMMUNICATION</div>
+            
+            <div class="comm-wrapper">
+                <div class="comm-label">OUTPUT LEVEL</div>
+                <div class="signal-bars">
+                    <div class="bar bar-1 solid"></div>
+                    <div class="bar bar-2 solid"></div>
+                    <div class="bar bar-3 solid"></div>
+                    <div class="bar bar-4 partial">
+                        <div class="fill"></div>
+                    </div>
+                    <div class="bar bar-5 empty"></div>
+                </div>
+            </div>
+
+            <div class="caption">I express clearly, but not constantly.</div>
+        </div>
+
+        <!-- SYSTEMS FLOW PANEL -->
+        <div class="sys-flow-panel bento-wide">
+            <div class="title">SYSTEMS</div>
+            
+            <div class="flow-container">
+                <svg viewBox="0 0 500 120" class="sys-diag">
+                    <!-- Main Line -->
+                    <line x1="50" y1="50" x2="450" y2="50" stroke="#555555" stroke-width="1.5" />
+                    
+                    <!-- Subtle Loop (ANALYSIS to STRUCTURE) -->
+                    <path d="M 183.3 50 C 216.6 15, 283.3 15, 316.6 50" fill="none" stroke="#333333" stroke-width="1.5" />
+                    
+                    <!-- Nodes -->
+                    <circle cx="50" cy="50" r="4" fill="#ffffff" />
+                    <text x="50" y="80" text-anchor="middle" class="flow-label">INPUT</text>
+
+                    <circle cx="183.3" cy="50" r="4" fill="#ffffff" />
+                    <text x="183.3" y="80" text-anchor="middle" class="flow-label">ANALYSIS</text>
+
+                    <circle cx="316.6" cy="50" r="4" fill="#ffffff" />
+                    <text x="316.6" y="80" text-anchor="middle" class="flow-label">STRUCTURE</text>
+
+                    <circle cx="450" cy="50" r="4" fill="#ffffff" />
+                    <text x="450" y="80" text-anchor="middle" class="flow-label">OUTPUT</text>
+                </svg>
+            </div>
+
+            <div class="caption">I don’t just create, I build systems.</div>
+        </div>
+
+        </div>
+
+        <div class="ticker">
+            <div class="ticker-inner">
+                <span>[DIAGNOSTIC] SYSTEM_ADVANTAGE_HUD_V19.0 AT MAX_PRECISION</span>
+                <span>[LOGIC] DELAY_OPTIMIZATION: 100% // ACCURACY_WEIGHT: 2.0X</span>
+                <span>[PROCESS] FRICTION_ERASER_ACTIVE // PATH_SCAN_COMPLETE</span>
+                <span>[ARCHETYPE] THE_SYSTEM_ARCHITECT: BUILDING_DEPTH_BEFORE_SPEED</span>
+                <span>[OUTPUT] HIGH_FIDELITY_INTENSITY_CONFIRMED</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>

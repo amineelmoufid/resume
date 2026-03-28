@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="bento.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="bento-loader" class="bento-loader">
+        <div class="loader-spinner">
+            <div class="spinner-ring"></div>
+            <span class="loader-text">Loading...</span>
+        </div>
+    </div>
+
+    <div class="bento-container">
+        
+        <!-- Header: Hey I'm Varnika -->
+        <div class="card intro-card flip-card" id="bento-intro-card">
+            <div class="card-inner">
+                <div class="card-front" id="intro-front">
+                    <!-- Front shows Title/Subtitle -->
+                    <h1 id="bento-intro-title">Hey, I'm <span class="designer-selection"><span class="typing-text">Amine</span><span class="handle tl"></span><span class="handle br"></span></span></h1>
+                    <p id="bento-intro-subtitle">Brand Creative Strategist @amine.ink</p>
+                    <div class="intro-actions" style="margin-top:auto; padding-top: 16px;">
+                        <button class="status-btn" style="pointer-events: none;">
+                            <span class="status-dot"></span>
+                            <span>Available for work</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-back" id="intro-back">
+                    <!-- Back shows About Me -->
+                    <h2 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500;">Who I Am</h2>
+                    <div id="bento-intro-about-text" style="font-size: 15px; line-height: 1.5; color: var(--text-primary);">
+                        Strategist shaped by finance and an artist through my way of thinking and create. Building brand identities that resonate and endure.
+                    </div>
+                    <div class="intro-actions" style="margin-top:auto; padding-top: 16px;">
+                        <button id="bento-status-btn" class="status-btn">
+                            <span class="status-dot"></span>
+                            <span id="bento-status-text">Available for work</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Avatar -->
+        <div class="card avatar-card flip-card" id="bento-avatar-card">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img id="bento-avatar-img" src="https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/images/avatar.png" alt="Avatar">
+                </div>
+                <div class="card-back bio-back">
+                    <div class="bio-content">
+                        <h3>View Bio</h3>
+                        <p>Click to see my journey</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Icons (5 columns = 5 boxes) -->
+        <div id="bento-socials-container" class="bento-socials">
+            <div class="card social-card">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="social-icon">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 4.15H5.078z"/>
+                </svg>
+            </div>
+            <!-- Other initial icons will be overwritten by JS -->
+        </div>
+
+
+        <!-- Services (Physics) -->
+        <div class="card services-card">
+            <div class="card-header">
+                <h3>Services</h3>
+            </div>
+            <div id="services-physics" class="physics-area">
+                <div class="physics-item pill pill-branding" data-ve-id="pill-branding">Brand Strategy</div>
+                <div class="physics-item pill pill-uxui" data-ve-id="pill-uxui">Creative Direction</div>
+                <div class="physics-item pill pill-3d" data-ve-id="pill-3d">Art Direction</div>
+                <div class="physics-item pill pill-video" data-ve-id="pill-video">Content Production</div>
+                <div class="physics-item pill pill-social" data-ve-id="pill-social">Narrative Design</div>
+                <div class="physics-item pill pill-ai" data-ve-id="pill-ai">AI Workflow</div>
+            </div>
+        </div>
+
+        <!-- Tools (Physics) -->
+        <div class="card tools-card">
+            <div class="card-header">
+                <h3>Tools I use</h3>
+            </div>
+            <div id="tools-physics" class="physics-area">
+                <!-- Populated by Firebase via bento-interactions.js -->
+            </div>
+        </div>
+
+        <!-- Strengths & Weaknesses -->
+        <div class="card sw-card">
+            <div class="sw-container">
+                <div class="sw-box strengths">
+                    <h3>Strengths</h3>
+                    <ul>
+                        <li data-tooltip="I can connect ideas to execution and actually deliver work">Execution + strategy</li>
+                        <li data-tooltip="I think in structured systems, not random actions">Structured thinking</li>
+                        <li data-tooltip="I care about details and overall coherence">Attention to detail</li>
+                        <li data-tooltip="I can handle both strategy and production">Versatility</li>
+                        <li data-tooltip="I stay consistent once I commit to something">Consistency</li>
+                    </ul>
+                </div>
+                <div class="sw-divider"></div>
+                <div class="sw-box weaknesses">
+                    <h3>Weaknesses</h3>
+                    <ul>
+                        <li data-tooltip="My English and French are not yet fully comfortable in professional conversations">English/French (still improving)</li>
+                        <li data-tooltip="I overthink before acting, especially at the beginning of projects">Overthinking</li>
+                        <li data-tooltip="I lose time trying to make things “right” instead of moving forward">Perfectionism slows me down</li>
+                        <li data-tooltip="I tend to work alone instead of involving others early">Working too independently</li>
+                        <li data-tooltip="I sometimes delay decisions when things are unclear">Slow decision-making</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collab -->
+        <div class="card collab-card">
+            <h2 id="bento-collab-title">Let's collab!</h2>
+            <p id="bento-collab-text">Let's turn your idea into reality with my design experience!</p>
+            <button class="cta-btn collab-action">
+                <span id="bento-collab-btntext">Send a message now!</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Recent Works -->
+        <div class="card works-card">
+            <div class="card-header">
+                <h3 id="bento-works-title">Recent Works</h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+            </div>
+            
+            <div class="ui-mockups">
+                <a id="work-link-1" href="#" target="_blank" class="mockup mock-1">
+                    <div class="mockup-bar">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    </div>
+                    <div id="work-img-1" class="mockup-content mock-img img1"></div>
+                </a>
+                <a id="work-link-2" href="#" target="_blank" class="mockup mock-2">
+                    <div class="mockup-bar">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    </div>
+                    <div id="work-img-2" class="mockup-content mock-img img2"></div>
+                </a>
+                <a id="work-link-3" href="#" target="_blank" class="mockup mock-3">
+                    <div class="mockup-bar">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    </div>
+                    <div id="work-img-3" class="mockup-content mock-img img3"></div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Global Modal Overlay -->
+    <div id="bento-modal" class="bento-modal">
+        <div class="modal-backdrop" id="modal-backdrop"></div>
+        <div class="modal-content-wrapper">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <div class="modal-body" id="modal-body">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="bento-toast" class="bento-toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#27c93f;">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toast-message">Email copied to clipboard!</span>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="importmap">
+        {
+          "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/database": "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"
+          }
+        }
+    </script>
+    <script src="bento-physics.js"></script>
+    <script type="module" src="bento-interactions.js"></script>
+    <!-- Gravity Indicator -->
+    <div id="gravity-indicator"></div>
+</body>
+</html>

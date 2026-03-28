@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amine's Control Panel - Resume Editor</title>
+    <link rel="stylesheet" href="data-editor.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="editor-container">
+        <header class="editor-header">
+            <div>
+                <h1>Welcome back, Amine</h1>
+                <span>Cloud-Synced Resume Control Panel</span>
+            </div>
+            <div class="footer-links">
+                <a href="visual-editor.html">Visual Editor</a>
+                <a href="../tabs/profile.html" target="_blank">View Live Resume</a>
+            </div>
+        </header>
+
+        <nav class="nav-dock">
+            <button onclick="showSection('header')" class="active">Header</button>
+            <button onclick="showSection('personal')">Identity</button>
+            <button onclick="showSection('who_i_am')">Bio</button>
+            <button onclick="showSection('experience')">Experience</button>
+            <button onclick="showSection('skills')">Skills Grid</button>
+            <button onclick="showSection('core_skills')">Capabilities</button>
+            <button onclick="showSection('sidebar_lists')">Sidebar</button>
+            <button onclick="showSection('spacing')">Typography</button>
+            <button onclick="showSection('layout')">Layout</button>
+        </nav>
+
+        <main class="content-area">
+            <header class="content-header">
+                <h1 id="current-section-title">Resume Editor</h1>
+                <div id="status-message" class="status-indicator">Cloud synced</div>
+            </header>
+            
+            <div id="editor-form" class="editor-form">
+                <!-- Form fields will be injected here -->
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="importmap">
+        {
+          "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/database": "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"
+          }
+        }
+    </script>
+    <script type="module" src="data-editor.js"></script>
+</body>
+</html>

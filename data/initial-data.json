@@ -1,0 +1,199 @@
+{
+  "header": {
+    "title": "Brand Creative Strategist",
+    "links": [
+      { "url": "https://www.linkedin.com/in/amine-elmoufid/", "label": "https://www.linkedin.com/in/amine-elmoufid/" },
+      { "url": "https://www.instagram.com/amine_elmoufid/", "label": "https://www.instagram.com/amine_elmoufid/" },
+      { "url": "mailto:amine.elmoufid.personal@gmail.com", "label": "amine.elmoufid.personal@gmail.com" },
+      { "url": "tel:+212675223453", "label": "+212 675 223453" },
+      { "url": "https://amine-elmoufid.ink/", "label": "https://amine-elmoufid.ink/" }
+    ]
+  },
+  "personal": {
+    "name": "Amine Elmoufid",
+    "age": "23y",
+    "location": "Meknès, Morocco"
+  },
+  "skills_left": [
+    { "label": "Creative Direction", "pct": "90%" },
+    { "label": "System Builder", "pct": "90%" },
+    { "label": "Content Strategist", "pct": "85%" },
+    { "label": "Concept Development", "pct": "80%" },
+    { "label": "AI Creative Tools", "pct": "98%" }
+  ],
+  "skills_right": [
+    { "label": "Selective Introvert", "pct": "100%" },
+    { "label": "Collaborative Mind", "pct": "80%" },
+    { "label": "Collaboration & Teamwork", "pct": "80%" },
+    { "label": "Calm Under Pressure", "pct": "98%" },
+    { "label": "Languages & Communication", "pct": "20%" }
+  ],
+  "final_pct": "100%",
+  "core_skills": [
+    {
+        "text": "<strong>Strategy & Branding:</strong> Brand positioning, campaign architecture, cultural storytelling",
+        "explanation": "Expertise in defining brand DNA, identifying market gaps, and building cohesive campaign frameworks that resonate culturally and emotionally."
+    },
+    {
+        "text": "<strong>Creative Direction:</strong> Storyboarding, concept decks, editorial design",
+        "explanation": "Guiding the visual and narrative soul of a project, from initial brainstorming and storyboarding to the final polish of editorial layouts."
+    },
+    {
+        "text": "<strong>Production:</strong> Cinematography, photography, editing (Premiere Pro, DaVinci Resolve, CapCut)",
+        "explanation": "Comprehensive technical production skills, covering the entire pipeline of high-end video and photo creation, color grading, and motion graphics."
+    },
+    {
+        "text": "<strong>Design Tools:</strong> Illustrator, Photoshop, Lightroom, Canva, AI creative tools",
+        "explanation": "Mastery of professional design suites combined with a cutting-edge understanding of AI-assisted creativity for rapid, high-quality asset generation."
+    },
+    {
+        "text": "<strong>Collaboration:</strong> Cross-functional teamwork, process building, project management",
+        "explanation": "Strong ability to lead and work within teams, building repeatable creative systems and managing complex project timelines without losing the spark."
+    },
+    {
+        "text": "<strong>Languages:</strong> Arabic (native), French & English (developing)",
+        "explanation": "Multilingual capabilities allowing for broad cultural perspective and the ability to collaborate on international projects."
+    }
+  ],
+  "who_i_am": [
+        {
+            "text": "I am 23, from Meknès, Morocco. On paper, my background is in Financial, Accounting, and Tax Engineering, and I am currently pursuing a Master d'Excellence at Université Moulay Ismail. In practice, my path has expanded beyond numbers into marketing, content creation, and storytelling. I see myself as a strategist shaped by finance and an artist through my way of thinking and create.",
+            "explanation": "This describes the core duality of my professional identity: the merger of analytical finance and creative strategy."
+        },
+        {
+            "text": "My experience ranges from managing luxury hotel campaigns at Mövenpick Marrakech, to leading audiovisual projects and building brand identities for creative teams. I've learned to merge structured analysis with creative execution. I see marketing not as promotion, but as brand architecture: designing messages, experiences, and identities that resonate and endure, while crafting narratives that give brands cultural depth and emotional impact.",
+            "explanation": "This highlights the 'brand architecture' philosophy I apply to all my projects."
+        }
+    ],
+  "experience": [
+    {
+      "title": "Mövenpick Hotel Marrakech (5★) – Community Manager",
+      "meta": "Marrakech, Morocco | 2025 (111 days internship)",
+      "explanation": "Lead creative strategy and content production for a global luxury hospitality brand.",
+      "bullets": [
+        "Designed and executed marketing campaigns aligned with luxury hospitality standards.",
+        "<strong>Directed creative concepts:</strong> editorial lines, campaign scripts, video storytelling.",
+        "Produced and edited photography and video content (filming, color grading, post-production).",
+        "Learned to build not just promotion, but brand experiences that reflect a 5★ identity."
+      ]
+    },
+    {
+      "title": "TM – TrainingMorocco Running Camps – Content Creator",
+      "meta": "Remote internship, Morocco | March 2025",
+      "explanation": "Founded the visual identity system for a sports startup.",
+      "bullets": [
+        "Joined pre-launch, before the project opened, to build the brand identity from scratch.",
+        "Designed the full visual identity, setting the foundation for how the brand would be recognized.",
+        "Created multi-platform content (websites & social media) tailored to different audiences.",
+        "Learned how to shape presence and trust for a brand with no existing reputation."
+      ]
+    },
+    {
+      "title": "Marketing Leaders Club – Member",
+      "meta": "Meknès, 2024–2025",
+      "explanation": "Active participation in a peer-led marketing strategy group.",
+      "bullets": [
+        "Participated in strategy sprints and peer reviews, sharpening collaborative creativity."
+      ]
+    },
+    {
+      "title": "Audiovisual Workshop, Université Moulay Ismail – Creative Director & DOP",
+      "meta": "Meknès, 2022–2024",
+      "explanation": "Hands-on cinematography and film theory exploration.",
+      "bullets": [
+        "Directed short films and visual projects exploring cinema's language as a tool for storytelling.",
+        "Developed skills in framing, rhythm, atmosphere, and narrative psychology."
+      ]
+    },
+    {
+      "title": "DREEZON (Music Band) – Brand & Content Manager",
+      "meta": "Meknès, 2023–2024",
+      "explanation": "Managed the visual ecosystem for an independent music collective.",
+      "bullets": [
+        "Built the band's identity and ecosystem by blending music, visuals, and storytelling."
+      ]
+    },
+    {
+      "title": "Minhoo (Personal Project) – Founder",
+      "meta": "2024–Present",
+      "explanation": "Research lab for creative workflows and content automation.",
+      "bullets": [
+        "Personal lab for testing content creation systems.",
+        "Early stage, but rooted in the belief that creativity is not luck, it's process."
+      ]
+    }
+  ],
+  "education": [
+    "Master d'Excellence in Accounting, Tax, and Financial Engineering (in progress)",
+    "Bachelor in Professional License of Excellence: Accounting, Tax, and Financial Engineering",
+    "DEUG in Economics & Management"
+  ],
+  "strengths": [
+    "<strong>From concept to execution:</strong> able to carry projects end-to-end.",
+    "<strong>Calm under pressure:</strong> disciplined from finance background.",
+    "<strong>System-builder:</strong> I like creating repeatable processes for creativity, not just \"one-off sparks.\"",
+    "<strong>Obsessed with originality and detail</strong>, turning small touches into memorable branding."
+  ],
+  "weaknesses": [
+    "<strong>Verbal communication:</strong> Writing flows easily for me, but I often struggle to express the same clarity when speaking.",
+    "<strong>Languages:</strong> My Arabic is strong, but my French and English still need development to match my ambitions.",
+    "<strong>Perfectionism:</strong> I sometimes push too far toward flawless execution, instead of moving faster with \"good enough.\"",
+    "<strong>Social energy:</strong> Constant new interactions can overwhelm me; I need balance to stay productive."
+  ],
+  "philosophy": [
+    "For me, branding is not decoration, it's message translated into story.",
+    "A brand should feel cinematic: carrying rhythm, memory, and atmosphere.",
+    "My goal is to design brands that outlive campaigns and become part of culture."
+  ],
+  "seeking": [
+    "A role or collaboration where brand strategy meets creative execution.",
+    "A small, inventive team where I can move between big ideas and practical assets, and originality drive the work.",
+    "Above all, collaboration: I cannot and do not want to build alone. The team is the foundation of everything I seek.",
+    "A space where depth is valued, where I can blend message, visuals, and strategy into something timeless."
+  ],
+  "spacing": {
+    "lineHeight": 0.9,
+    "letterSpacing": -0.2,
+    "baseFs": 11,
+    "headerLh": 1.05,
+    "headerLs": -2,
+    "headerFs": 52,
+    "sectionLh": 1.1,
+    "sectionLs": -0.5,
+    "sectionFs": 18,
+    "jobLh": 1.2,
+    "jobLs": 0,
+    "jobFs": 14
+  },
+  "layout": {
+    "colLeftWidth": 255,
+    "colMidWidth": 440,
+    "sidebarWidth": 315,
+    "gapLeftMid": 33,
+    "gapMidRight": 33,
+    "sectionMarginBottom": 25,
+    "headerMarginBottom": 35,
+    "mainAreaPaddingLeft": 45,
+    "headerTitleWidth": 700,
+    "fullPageWidth": 1123,
+    "linksPaddingV": 3.5,
+    "linksPaddingH": 9,
+    "jobMarginBottom": 15,
+    "gapHeaderTitleLinks": 5,
+    "gapProfileInfo": 18,
+    "gapInfoSkills": 18,
+    "sidebarUnitGap": 22,
+    "part1Order": ["profile", "technical_skills", "core_skills"],
+    "part2Order": ["who_i_am", "jobs"],
+    "part3Order": ["education", "strengths", "weaknesses", "philosophy", "seeking"]
+  },
+  "bento": {
+    "socials": [
+      { "name": "LinkedIn", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3V10h3v9zm-1.5-10.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 10.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3V10h3v1.765c1.396-2.586 7-2.777 7 2.476v4.759z\"/></svg>", "url": "https://www.linkedin.com/in/amine-elmoufid/" },
+      { "name": "Instagram", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07m0-2.163c-3.259 0-3.667.014-4.947.072-1.277.058-2.148.261-2.911.558a5.811 5.811 0 00-2.103 1.371A5.82 5.82 0 00.741 4.102c-.297.763-.5 1.634-.558 2.911-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.058 1.277.261 2.148.558 2.911a5.82 5.82 0 001.371 2.103 5.823 5.823 0 002.103 1.371c.763.297 1.634.5 2.911.558 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.277-.058 2.148-.261 2.911-.558a5.82 5.82 0 002.103-1.371 5.823 5.823 0 001.371-2.103c.297-.763.5-1.634.558-2.911.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.058-1.277-.261-2.148-.558-2.911a5.823 5.823 0 00-1.371-2.103 5.823 5.823 0 00-2.103-1.371c-.763-.297-1.634-.5-2.911-.558-1.28-.058-1.688-.072-4.947-.072z\"/></svg>", "url": "https://www.instagram.com/amine_elmoufid/" },
+      { "name": "Portfolio", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path></svg>", "url": "feed.html" },
+      { "name": "Folders", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z\"></path></svg>", "url": "amine-elmoufid.ink/" },
+      { "name": "Resume", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z\"></path><polyline points=\"13 2 13 9 20 9\"></polyline></svg>", "url": "index.html" }
+    ]
+  }
+}

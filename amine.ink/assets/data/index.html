@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Z3AMA HADI FIK?</title>
+<style>
+@font-face {
+font-family: 'Pixel';
+src: url('https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2') format('woff2');
+}
+
+
+body {
+background-color: #000;
+color: #0ff;
+font-family: 'Pixel', monospace;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100vh;
+margin: 0;
+overflow: hidden;
+text-align: center;
+}
+
+.noisy {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+pointer-events: none;
+background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+');
+opacity: 0.1;
+animation: noise 0.2s linear infinite;
+}
+
+@keyframes noise {
+0% { transform: translate(0, 0); }
+10% { transform: translate(-5%, -5%); }
+20% { transform: translate(-10%, 5%); }
+30% { transform: translate(5%, -10%); }
+40% { transform: translate(-5%, 15%); }
+50% { transform: translate(-10%, 5%); }
+60% { transform: translate(15%, 0); }
+70% { transform: translate(0, 10%); }
+80% { transform: translate(-15%, 0); }
+90% { transform: translate(10%, 5%); }
+100% { transform: translate(5%, 0); }
+}
+
+.scanlines {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: repeating-linear-gradient(
+0deg,
+rgba(0, 0, 0, 0.5),
+rgba(0, 0, 0, 0.5) 1px,
+transparent 1px,
+transparent 2px
+);
+pointer-events: none;
+}
+
+.content {
+position: relative;
+font-size: 1.5em;
+text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff;
+animation: flicker 1.5s infinite alternate;
+}
+
+.glitch {
+position: absolute;
+top: 0;
+left: 0;
+white-space: nowrap;
+}
+
+.glitch:before,
+.glitch:after {
+content: 'malk 3la had z3ama kamla? ';
+position: absolute;
+top: 0;
+left: 0;
+overflow: hidden;
+background: #000;
+}
+
+.glitch:before {
+left: 2px;
+text-shadow: -2px 0 #f0f;
+animation: glitch-anim-1 2s linear infinite reverse;
+}
+
+.glitch:after {
+left: -2px;
+text-shadow: -2px 0 #0f0;
+animation: glitch-anim-2 2s linear infinite reverse;
+}
+
+@keyframes flicker {
+0%, 18%, 22%, 25%, 53%, 57%, 100% {
+text-shadow:
+0 0 4px #0ff,
+0 0 11px #0ff,
+0 0 19px #0ff,
+0 0 40px #0ff,
+0 0 80px #0ff,
+0 0 90px #0ff,
+0 0 100px #0ff,
+0 0 150px #0ff;
+}
+20%, 24%, 55% {
+text-shadow: none;
+}
+}
+
+@keyframes glitch-anim-1 {
+0% { clip: rect(29px, 9999px, 89px, 0); }
+5% { clip: rect(48px, 9999px, 63px, 0); }
+10% { clip: rect(19px, 9999px, 100px, 0); }
+15% { clip: rect(79px, 9999px, 7px, 0); }
+20% { clip: rect(63px, 9999px, 26px, 0); }
+25% { clip: rect(18px, 9999px, 86px, 0); }
+30% { clip: rect(22px, 9999px, 68px, 0); }
+35% { clip: rect(86px, 9999px, 49px, 0); }
+40% { clip: rect(41px, 9999px, 3px, 0); }
+45% { clip: rect(25px, 9999px, 78px, 0); }
+50% { clip: rect(1px, 9999px, 94px, 0); }
+55% { clip: rect(80px, 9999px, 48px, 0); }
+60% { clip: rect(61px, 9999px, 1px, 0); }
+65% { clip: rect(2px, 9999px, 90px, 0); }
+70% { clip: rect(89px, 9999px, 43px, 0); }
+75% { clip: rect(5px, 9999px, 57px, 0); }
+80% { clip: rect(59px, 9999px, 4px, 0); }
+85% { clip: rect(35px, 9999px, 88px, 0); }
+90% { clip: rect(10px, 9999px, 51px, 0); }
+95% { clip: rect(74px, 9999px, 14px, 0); }
+100% { clip: rect(32px, 9999px, 60px, 0); }
+}
+
+@keyframes glitch-anim-2 {
+0% { clip: rect(29px, 9999px, 89px, 0); }
+5% { clip: rect(48px, 9999px, 63px, 0); }
+10% { clip: rect(19px, 9999px, 100px, 0); }
+15% { clip: rect(79px, 9999px, 7px, 0); }
+20% { clip: rect(63px, 9999px, 26px, 0); }
+25% { clip: rect(18px, 9999px, 86px, 0); }
+30% { clip: rect(22px, 9999px, 68px, 0); }
+35% { clip: rect(86px, 9999px, 49px, 0); }
+40% { clip: rect(41px, 9999px, 3px, 0); }
+45% { clip: rect(25px, 9999px, 78px, 0); }
+50% { clip: rect(1px, 9999px, 94px, 0); }
+55% { clip: rect(80px, 9999px, 48px, 0); }
+60% { clip: rect(61px, 9999px, 1px, 0); }
+65% { clip: rect(2px, 9999px, 90px, 0); }
+70% { clip: rect(89px, 9999px, 43px, 0); }
+75% { clip: rect(5px, 9999px, 57px, 0); }
+80% { clip: rect(59px, 9999px, 4px, 0); }
+85% { clip: rect(35px, 9999px, 88px, 0); }
+90% { clip: rect(10px, 9999px, 51px, 0); }
+95% { clip: rect(74px, 9999px, 14px, 0); }
+100% { clip: rect(32px, 9999px, 60px, 0); }
+}
+
+.cybr-btn {
+margin-top: 40px;
+font-family: 'Pixel', monospace;
+font-size: 1.0rem;
+background-color: transparent;
+color: #0ff;
+border: 2px solid #0ff;
+padding: 15px 30px;
+text-transform: uppercase;
+position: relative;
+overflow: hidden;
+cursor: pointer;
+text-shadow: 0 0 5px #0ff;
+transition: all 0.3s ease;
+}
+
+.cybr-btn:before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(
+120deg,
+transparent,
+rgba(0, 255, 255, 0.4),
+transparent
+);
+transition: all 0.5s;
+}
+
+.cybr-btn:hover:before {
+left: 100%;
+}
+
+.cybr-btn:hover {
+color: #000;
+background-color: #0ff;
+box-shadow: 0 0 50px #0ff;
+}
+
+</style>
+</head>
+<body>
+
+<div class="noisy"></div>
+<div class="scanlines"></div>
+
+<div class="content">
+malk 3la had z3ama kamla?<br><br><br><br><br>
+<div class="glitch"></div>
+</div>
+
+<button class="cybr-btn" onclick="window.location.href='https://amine.ink'">
+<h1>Khrej </h1>
+
+wa 2anta saghir
+<br>
+<h1>⇚</h1> 
+</button>
+
+</body>
+</html>
