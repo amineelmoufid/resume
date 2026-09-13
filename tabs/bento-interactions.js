@@ -6,6 +6,15 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const bentoRef = ref(db, 'bento');
 
+// Failsafe: If Firebase is slow, offline, or blocked, reveal default content after 1.5s
+setTimeout(() => {
+    document.querySelector('.bento-container')?.classList.add('loaded');
+    const loader = document.getElementById('bento-loader');
+    if (loader && !loader.classList.contains('hidden')) {
+        loader.classList.add('hidden');
+    }
+}, 1500);
+
 onValue(bentoRef, (snapshot) => {
     const data = snapshot.val() || {};
     document.querySelector('.bento-container')?.classList.add('loaded');

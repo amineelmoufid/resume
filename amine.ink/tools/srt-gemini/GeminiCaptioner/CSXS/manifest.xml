@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="7.0"
+                   ExtensionBundleId="com.srtgemini.captioner"
+                   ExtensionBundleName="Gemini Captioner"
+                   ExtensionBundleVersion="1.0.0">
+  <ExtensionList>
+    <Extension Id="com.srtgemini.captioner.panel" Version="1.0.0"/>
+  </ExtensionList>
+
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="PPRO" Version="18.0"/>
+    </HostList>
+    <LocaleList>
+      <Locale Code="All"/>
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="11.0"/>
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+
+  <DispatchInfoList>
+    <Extension Id="com.srtgemini.captioner.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./index.html</MainPath>
+          <ScriptPath>./js/premiere.jsx</ScriptPath>
+          <CEFCommandLine>
+            <Parameter>--allow-file-access-from-files</Parameter>
+            <Parameter>--allow-insecure-localhost</Parameter>
+          </CEFCommandLine>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Gemini Captioner</Menu>
+          <Geometry>
+            <Size>
+              <Height>720</Height>
+              <Width>1200</Width>
+            </Size>
+            <MaxSize>
+              <Height>2000</Height>
+              <Width>3200</Width>
+            </MaxSize>
+            <MinSize>
+              <Height>520</Height>
+              <Width>360</Width>
+            </MinSize>
+          </Geometry>
+          <Icons>
+            <Icon Type="Normal">./icons/icon-light.png</Icon>
+            <Icon Type="RollOver">./icons/icon-light.png</Icon>
+            <Icon Type="DarkNormal">./icons/icon-dark.png</Icon>
+            <Icon Type="DarkRollOver">./icons/icon-dark.png</Icon>
+          </Icons>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>

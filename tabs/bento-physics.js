@@ -2,7 +2,9 @@ const { Engine, Render, Runner, Bodies, Composite, Mouse, MouseConstraint } = Ma
 
 let activeEngines = [];
 let activeRunners = [];
+let allBodies = [];
 let animationFrameId = null;
+let isPaused = false;
 
 // Global mouse tracker for attraction effect
 let globalMouse = { x: -1000, y: -1000 };
@@ -20,14 +22,18 @@ window.addEventListener('mousemove', (e) => {
     globalMouse.x = e.clientX;
     globalMouse.y = e.clientY;
     updateIndicator(e.clientX, e.clientY, true);
-});
+}, { passive: true });
 
-// Listen for mouse messages from parent (Visual Editor)
+// Listen for mouse messages from parent (Visual Editor) and tab visibility
 window.addEventListener('message', (e) => {
     if (e.data && e.data.type === 'HEARTBEAT_MOUSE') {
         globalMouse.x = e.data.x;
         globalMouse.y = e.data.y;
         updateIndicator(e.data.x, e.data.y, true);
+    }
+    if (e.data && e.data.type === 'TAB_VISIBILITY') {
+        if (e.data.visible) resumePhysics();
+        else pausePhysics();
     }
 });
 
@@ -36,20 +42,54 @@ window.addEventListener('mouseout', (e) => {
     if (!e.relatedTarget && indicator) indicator.classList.remove('active');
 });
 
+function pausePhysics() {
+    if (isPaused) return;
+    isPaused = true;
+    activeRunners.forEach(r => Runner.stop(r));
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+}
+
+function resumePhysics() {
+    if (!isPaused) return;
+    isPaused = false;
+    activeRunners.forEach((r, i) => {
+        if (activeEngines[i]) Runner.run(r, activeEngines[i]);
+    });
+    if (!animationFrameId && allBodies.length > 0) {
+        animationFrameId = requestAnimationFrame(updateDOM);
+    }
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pausePhysics();
+    else resumePhysics();
+});
+
 window.destroyPhysics = function() {
-    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
     activeRunners.forEach(r => Runner.stop(r));
     activeEngines.forEach(e => Engine.clear(e));
     activeEngines = [];
     activeRunners = [];
+    allBodies = [];
     
     // Remove the tracking canvases
     document.querySelectorAll('.physics-area canvas').forEach(c => c.remove());
 };
 
 window.initPhysics = function() {
+    window.destroyPhysics();
     initPhysicsCard('services-physics');
     initPhysicsCard('tools-physics');
+    if (!animationFrameId && allBodies.length > 0) {
+        animationFrameId = requestAnimationFrame(updateDOM);
+    }
 };
 
 window.updatePhysicsParams = function(params) {
@@ -107,11 +147,12 @@ function initPhysicsCard(containerId) {
     const domItems = container.querySelectorAll('.physics-item');
     const bodies = [];
 
-    domItems.forEach((el, index) => {
+    domItems.forEach((el) => {
         const isIcon = el.classList.contains('tool-icon');
-        // Capture actual dimensions from the DOM!
-        let w = el.getBoundingClientRect().width || (isIcon ? 60 : 80);
-        let h = el.getBoundingClientRect().height || (isIcon ? 60 : 38);
+        // Capture actual dimensions from the DOM once at init!
+        const rect = el.getBoundingClientRect();
+        let w = rect.width || (isIcon ? 60 : 80);
+        let h = rect.height || (isIcon ? 60 : 38);
         
         // Slightly buffer dimensions to prevent text clipping
         w += 2;
@@ -138,9 +179,12 @@ function initPhysicsCard(containerId) {
             });
         }
 
-        // Attach DOM element reference directly to body
+        // Cache half-dimensions directly on body to eliminate forced synchronous reflow (layout thrashing) in update loop
+        body.halfWidth = w / 2;
+        body.halfHeight = h / 2;
         body.domElement = el;
         bodies.push(body);
+        allBodies.push(body);
         
         // Make sure it starts smoothly and is visible
         el.style.zIndex = '2'; 
@@ -153,7 +197,6 @@ function initPhysicsCard(containerId) {
     Composite.add(world, bodies);
 
     // MOUSE INTERACTION SETUP
-    // Matter needs a mouse to grab bodies
     const mouse = Mouse.create(container);
     const mouseConstraint = MouseConstraint.create(engine, {
         mouse: mouse,
@@ -164,9 +207,18 @@ function initPhysicsCard(containerId) {
     });
 
     Composite.add(world, mouseConstraint);
+
+    // Allow normal vertical touch scrolling on mobile when user is not actively dragging a pill
+    container.addEventListener('touchmove', (e) => {
+        if (!mouseConstraint.body) {
+            // User is not dragging a physics body; allow page scroll
+            e.stopPropagation();
+        }
+    }, { passive: true });
     
     // ATTRACTION LOGIC
     Matter.Events.on(engine, 'beforeUpdate', () => {
+        if (isPaused) return;
         const rect = container.getBoundingClientRect();
         // Convert global client coords to container-local coords
         const localMouseX = (globalMouse.x - rect.left);
@@ -200,27 +252,10 @@ function initPhysicsCard(containerId) {
     });
 
     // Keep the mouse in sync with scrolling
-    mouseConstraint.mouse.element.removeEventListener("mousewheel", mouseConstraint.mouse.mousewheel);
-    mouseConstraint.mouse.element.removeEventListener("DOMMouseScroll", mouseConstraint.mouse.mousewheel);
-
-    // Sync loop: Engine updates -> DOM updates
-    function updateDOM() {
-        bodies.forEach(body => {
-            const el = body.domElement;
-            if (!el) return;
-            const x = body.position.x - el.offsetWidth / 2;
-            const y = body.position.y - el.offsetHeight / 2;
-            
-            // Skip invalid positions
-            if (isNaN(x) || isNaN(y)) return;
-            
-            // Translate + rotate exactly to the physics bodies!
-            el.style.transform = `translate(${x}px, ${y}px) rotate(${body.angle}rad)`;
-        });
-        animationFrameId = requestAnimationFrame(updateDOM);
+    if (mouseConstraint.mouse.element) {
+        mouseConstraint.mouse.element.removeEventListener("mousewheel", mouseConstraint.mouse.mousewheel);
+        mouseConstraint.mouse.element.removeEventListener("DOMMouseScroll", mouseConstraint.mouse.mousewheel);
     }
-    
-    animationFrameId = requestAnimationFrame(updateDOM);
 
     // Start Engine
     const runner = Runner.create();
@@ -235,7 +270,35 @@ function initPhysicsCard(containerId) {
         
         Matter.Body.setPosition(ground, { x: width / 2, y: height + 500 });
         Matter.Body.setPosition(wallRight, { x: width + 500, y: height / 2 });
-    });
+
+        bodies.forEach(body => {
+            if (body.domElement) {
+                const r = body.domElement.getBoundingClientRect();
+                body.halfWidth = (r.width || 60) / 2;
+                body.halfHeight = (r.height || 38) / 2;
+            }
+        });
+    }, { passive: true });
+}
+
+// Single synchronized high-performance update loop without forced layout reflows
+function updateDOM() {
+    if (!isPaused) {
+        for (let i = 0; i < allBodies.length; i++) {
+            const body = allBodies[i];
+            const el = body.domElement;
+            if (!el) continue;
+            
+            const x = body.position.x - body.halfWidth;
+            const y = body.position.y - body.halfHeight;
+            
+            // Skip invalid positions
+            if (!isNaN(x) && !isNaN(y)) {
+                el.style.transform = `translate(${x}px, ${y}px) rotate(${body.angle}rad)`;
+            }
+        }
+    }
+    animationFrameId = requestAnimationFrame(updateDOM);
 }
 
 // Ensure DOM is fully loaded and layout has run before parsing widths

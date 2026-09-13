@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gemini Captioner</title>
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://generativelanguage.googleapis.com; img-src 'self' data:; media-src 'self' blob:; script-src 'self'; style-src 'self' 'unsafe-inline';">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="panel-header">
+      <h1>Gemini Captioner</h1>
+      <div class="host-info" id="hostInfo"></div>
+    </header>
+
+    <div class="workspace">
+      <section class="panel-card panel-card--upload">
+        <header class="panel-card__header">
+          <h2>Audio Source</h2>
+          <p>Drop a file below or browse your drive.</p>
+        </header>
+        <label class="dropzone" id="dropzone">
+          <input type="file" id="audioInput" accept=".mp3,.wav,.m4a,.aac,.flac,.ogg" hidden>
+          <span id="dropLabel">Drop audio here or click to browse</span>
+        </label>
+        <div class="audio-preview hidden" id="audioPreview">
+          <audio id="audioPlayer" controls></audio>
+          <div class="audio-meta" id="audioMeta"></div>
+        </div>
+
+        <div class="panel-divider"></div>
+
+        <header class="panel-card__header">
+          <h2>Caption Settings</h2>
+          <p>Tune how captions are generated before starting transcription.</p>
+        </header>
+        <div class="controls-grid">
+          <div class="control-group">
+            <label for="wordsPerCaption">Words per caption</label>
+            <select id="wordsPerCaption">
+              <option value="single">Single (1 word)</option>
+              <option value="short">Short (2-4 words)</option>
+              <option value="medium" selected>Medium (4-8 words)</option>
+              <option value="sentence">Sentence (full sentence)</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="linesPerCaption">Lines per caption</label>
+            <select id="linesPerCaption">
+              <option value="1">1 line</option>
+              <option value="2" selected>2 lines</option>
+              <option value="3">3 lines</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="scriptChoice">Character script</label>
+            <select id="scriptChoice">
+              <option value="latin">Latin</option>
+              <option value="arabic">Arabic</option>
+              <option value="both" selected>Preserve both</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="modelChoice">Gemini model</label>
+            <select id="modelChoice">
+              <option value="models/gemini-2.5-flash" selected>Gemini 2.5 Flash</option>
+              <option value="models/gemini-2.5-pro">Gemini 2.5 Pro</option>
+              <option value="models/gemini-2.0-flash">Gemini 2.0 Flash</option>
+              <option value="models/gemini-flash-lite-latest">Gemini Flash Lite (latest)</option>
+            </select>
+          </div>
+        </div>
+        <button id="transcribeBtn" class="primary" type="button">Transcribe</button>
+      </section>
+
+      <div class="panel-card status-card">
+        <span class="status-label">Status</span>
+        <div class="status-message" id="statusBar"></div>
+      </div>
+
+      <section class="panel-card viewer-card">
+        <header class="panel-card__header viewer-header">
+          <div>
+            <h2>Caption Workspace</h2>
+            <p>Switch views to review raw output, plain text, or the visual editor.</p>
+          </div>
+        </header>
+        <nav class="view-tabs" role="tablist">
+          <button type="button" data-view="srt" class="active">Raw SRT</button>
+          <button type="button" data-view="text">Text Mode</button>
+          <button type="button" data-view="editor">Visual Editor</button>
+        </nav>
+
+        <div class="view-surfaces">
+          <div class="view-surface" id="viewSRT">
+            <textarea id="srtOutput" spellcheck="false"></textarea>
+          </div>
+
+          <div class="view-surface hidden" id="viewText">
+            <div class="plain-text" id="plainTextView"></div>
+          </div>
+
+          <div class="view-surface hidden" id="viewEditor">
+          <div class="table-head">
+            <span>#</span><span>Start</span><span>End</span><span>Waveform</span><span>Caption</span><span>Play</span>
+          </div>
+            <div class="caption-table" id="captionTable"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="panel-card action-bar">
+        <div class="action-group">
+          <button id="enhanceBtn" type="button">Enhance Latin Words</button>
+          <button id="normalizeSrtBtn" class="tiny" type="button" title="Normalize SRT time format">Fix Time Format</button>
+        </div>
+        <div class="action-group">
+          <button id="downloadBtn" type="button">Download SRT</button>
+          <button id="pushPremiereBtn" class="primary" type="button">Push to Timeline</button>
+          <button id="closeGapsBtn" type="button" title="Close gaps between captions">Close Gaps</button>
+        </div>
+        <div class="action-group direction-toggle">
+          <button id="ltrBtn" class="tiny" type="button" title="Left-to-right text direction">LTR</button>
+          <button id="rtlBtn" class="tiny" type="button" title="Right-to-left text direction">RTL</button>
+          <button id="updateApiKeyBtn" type="button" title="Update Gemini API key">API Key</button>
+        </div>
+      </div>
+
+      <section class="panel-card translator-card">
+        <header class="panel-card__header">
+          <h2>Translation</h2>
+          <p>Create a translated caption pass once transcription is ready.</p>
+        </header>
+        <div class="translator">
+          <input id="translationLanguage" type="text" placeholder="Translate to (e.g. English, French, Arabic)">
+          <button id="translateBtn" type="button">Translate</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="apiKeyModal" class="modal hidden">
+    <div class="modal__card">
+      <h3>Gemini API Key</h3>
+      <p>Paste your Google Gemini API key below. It is stored locally for this panel only.</p>
+      <input id="apiKeyInput" type="password" placeholder="AIza...">
+      <div class="modal__actions">
+        <button id="apiKeyCancelBtn" type="button">Cancel</button>
+        <button id="apiKeySaveBtn" class="primary" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>

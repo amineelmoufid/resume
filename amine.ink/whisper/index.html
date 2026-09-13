@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice to Text and Translation (Gemini 2.5 Pro)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Voice Transcription and Translation</h1>
+    <p>Click the button to record 'al7ajj'.</p>
+    <button id="recordToggleButton" aria-label="Start Recording">
+        <div class="icon"></div>
+        <div class="spinner"></div>
+    </button>
+    <div id="status"></div>
+    <div id="output"></div>
+    <div class="action-buttons-container">
+        <div id="ttsContainer">
+            <button id="ttsActionButton" disabled>Read Aloud</button>
+            <div id="authPromptUI">
+                <span>Authentication Required</span>
+                <button id="signInButton">Sign In to Continue</button>
+            </div>
+        </div>
+        <button id="copyButton">Copy</button>
+    </div>
+
+    <script src="https://js.puter.com/v2/"></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

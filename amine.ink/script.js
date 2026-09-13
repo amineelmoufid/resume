@@ -115,22 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     event.preventDefault();
                 }
             });
-
-            // Swipe detection
-            let touchStartY = 0;
-            cabinetFront.addEventListener('touchstart', (e) => {
-                touchStartY = e.touches[0].clientY;
-            }, {passive: true});
-
-            cabinetFront.addEventListener('touchend', (e) => {
-                let touchEndY = e.changedTouches[0].clientY;
-                if (touchStartY - touchEndY > 30) {
-                    // Swiped up
-                    if (!cabinet.classList.contains('is-open')) {
-                        toggleCabinet();
-                    }
-                }
-            }, {passive: true});
             
             function openFolder(folder) {
                 // Add this at the beginning of the openFolder function
@@ -167,19 +151,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const folderIndex = allFolders.indexOf(folder);
                 const contentArea = folder.querySelector('.folder-content-area');
                 
-                const desiredTop = (window.innerHeight * 0.1) + 18; 
+                const isMobile = window.innerWidth <= 768;
+                const desiredTop = isMobile ? 15 : (window.innerHeight * 0.1) + 18; 
                 
-                // When a folder expands, .file-stack height becomes 800px.
-                // With 30px padding and 4px borders, the total cabinet height becomes 834px.
-                // Flexbox perfectly centers this height within the viewport.
-                const finalCabinetTop = (window.innerHeight - 834) / 2;
+                // When a folder expands, .file-stack height adapts to viewport
+                const stackHeight = isMobile ? Math.min(650, window.innerHeight * 0.85) : 800;
+                const finalCabinetHeight = stackHeight + 34;
+                const finalCabinetTop = (window.innerHeight - finalCabinetHeight) / 2;
                 
-                // The native offset of the folder within the cabinet (static CSS un-transformed heights).
-                // 30px (padding-top) + 2px (cabinet border-top) + (20px per folder).
-                const folderOffset = 32 + (folderIndex * 20);
+                const stepHeight = isMobile ? 18 : 20;
+                const folderOffset = 32 + (folderIndex * stepHeight);
                 
-                // Calculate the exact translateY required to put the folder at desiredTop,
-                // without relying on getBoundingClientRect which fails during rapid clicks.
                 const cabinetMoveDistance = desiredTop - (finalCabinetTop + folderOffset);
                 cabinet.style.transform = `translateY(${cabinetMoveDistance}px)`;
 
@@ -196,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="folder-control-button" title="Instagram" data-action="link" data-value="https://instagram.com/amine_elmoufid"><img src='https://img.icons8.com/?size=100&id=ZOFC5nSr215Y&format=png&color=000000' style='height: 20px'></button>
                         <button class="folder-control-button" title="Email" data-action="copy" data-value="amine.elmoufid.personal@gmail.com" data-link="mailto:amine.elmoufid.personal@gmail.com"><img src='https://img.icons8.com/?size=100&id=63489&format=png&color=000000' style='height: 20px'></button>
                         <button class="folder-control-button" title="Phone / WhatsApp" data-action="copy" data-value="+212675223453" data-link="https://wa.me/212675223453"><img src='https://img.icons8.com/?size=100&id=fAnexogbxI5v&format=png&color=000000' style='height: 20px'></button>
-                        <button class="folder-control-button" id="download-button" title="Download Resume" data-action="download" data-value="assets/Resume amine elmoufid.pdf" data-link="https://amine-elmoufid.ink/assets/Resume%20amine%20elmoufid.pdf"><img src='https://img.icons8.com/?size=100&id=23882&format=png&color=000000' style='height: 20px'></button>
+                        <button class="folder-control-button" id="download-button" title="Download Resume" data-action="download" data-value="assets/Resume amine elmoufid.pdf" data-link="https://amine.ink/assets/Resume%20amine%20elmoufid.pdf"><img src='https://img.icons8.com/?size=100&id=23882&format=png&color=000000' style='height: 20px'></button>
                         `;
                     }
 
@@ -347,6 +329,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 audio.addEventListener('timeupdate', timeUpdateHandler);
                 audio.addEventListener('ended', endedHandler);
+                audio.addEventListener('error', () => {
+                    console.warn('Audio track unavailable:', config.audioElId);
+                    audioControlBtn.style.opacity = '0.5';
+                    audioControlBtn.style.pointerEvents = 'none';
+                });
 
                 // Add this line inside BOTH initializeProseTranscript and initializeStructuredTranscript
                 audio.addEventListener('ended', advanceGuidedTour);
@@ -1047,7 +1034,7 @@ document.addEventListener('mousemove', (event) => {
             audioConsentModal.id = 'audio-consent-modal';
             audioConsentModal.innerHTML = `
                 <div class="audio-consent-content">
-                    <p><img src='https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/amine.ink/assets/imgs/read_aload.png' style='height: 30px';><br>Enable automatic audio narration?  </p>
+                    <p><img src='assets/imgs/read_aload.png' style='height: 30px';><br>Enable automatic audio narration?  </p>
                     <div class="audio-consent-buttons">
                         <button id="confirm-audio-yes"><b>Yes</b></button>
                         <button id="confirm-audio-no">No</button>
@@ -1077,14 +1064,23 @@ document.addEventListener('mousemove', (event) => {
     const collageContainer = document.getElementById('background-collage');
     const allCollageImages = []; // An array to hold the created image elements
 
-    // STEP 1: Immediately create all 83 images and add them to the page.
-    // They will be invisible due to the CSS, but this allows the browser to start downloading them.
-    for (let i = 1; i <= 83; i++) {
-        const img = document.createElement('img');
-        img.src = `https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/amine.ink/assets/imgs/(${i})-min.jpg`;
-        img.className = 'collage-image clickable-image';
+    // Detect mobile viewport to prevent DOM and GPU thrashing
+    const isMobileCollage = window.innerWidth <= 768;
+    const maxCollageImages = isMobileCollage ? 18 : 45;
 
-        // Apply your random positioning and rotation
+    // STEP 1: Create an optimized initial subset of images with async decoding and lazy loading
+    const initialBatch = isMobileCollage ? 6 : 12;
+    const totalTargetImages = maxCollageImages;
+
+    function createCollageImg(i) {
+        const imgIndex = isMobileCollage ? Math.min(83, Math.floor((i * 83) / maxCollageImages)) : i;
+        const img = document.createElement('img');
+        img.src = `assets/imgs/(${imgIndex})-min.jpg`;
+        img.className = 'collage-image clickable-image';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+
+        // Apply random positioning and rotation
         const randomTop = Math.random() * 90;
         const randomLeft = Math.random() * 90;
         const randomRotate = (Math.random() * 30) - 15;
@@ -1092,32 +1088,36 @@ document.addEventListener('mousemove', (event) => {
         img.style.left = `${randomLeft}vw`;
         img.style.transform = `rotate(${randomRotate}deg)`;
 
-        // Store the image element and add it to the DOM
         allCollageImages.push(img);
         collageContainer.appendChild(img);
+        return img;
     }
 
-    // STEP 2: After the initial 1-second delay, start the sequential reveal process.
+    for (let i = 1; i <= initialBatch; i++) {
+        createCollageImg(i);
+    }
+
+    // Defer remaining background collage images until after initial render
     setTimeout(() => {
-        let revealIndex = 0; // A counter for which image to reveal next
+        for (let i = initialBatch + 1; i <= totalTargetImages; i++) {
+            createCollageImg(i);
+        }
+    }, 2500);
+
+    // STEP 2: After the initial delay, start sequential reveal
+    setTimeout(() => {
+        let revealIndex = 0;
+        const revealInterval = isMobileCollage ? 150 : 100;
         
-        // This function reveals one image and then schedules the next one
         function revealNextImage() {
-            // Check if there are still images left to reveal
             if (revealIndex < allCollageImages.length) {
-                // Add the .is-visible class to the current image to trigger its fade-in
                 allCollageImages[revealIndex].classList.add('is-visible');
                 revealIndex++;
-                
-                // Set a short delay (e.g., 100ms) before revealing the next image
-                setTimeout(revealNextImage, 100); 
+                setTimeout(revealNextImage, revealInterval); 
             }
         }
-
-        // Kick off the very first reveal, starting the cascade
         revealNextImage();
-
-    }, 1000); // The 1-second (10,000 milliseconds) initial delay
+    }, 800);
 
     // --- END OF FINAL COLLAGE LOGIC ---
 
@@ -1131,27 +1131,41 @@ document.addEventListener('mousemove', (event) => {
     function openPdfModal() {
         pdfModal.style.display = 'flex';
         currentPdfZoom = 1.0; // Reset zoom every time
-        pdfIframe.style.transform = 'scale(1)';
-        pdfIframe.style.transformOrigin = 'top left';
+        if (pdfIframe) {
+            const pdfSrc = pdfIframe.getAttribute('data-src') || 'assets/Resume amine elmoufid.pdf';
+            if (!pdfIframe.src || pdfIframe.src === '' || pdfIframe.src === 'about:blank' || !pdfIframe.src.includes('Resume')) {
+                pdfIframe.src = pdfSrc;
+            }
+            pdfIframe.style.transform = 'scale(1)';
+            pdfIframe.style.transformOrigin = 'top left';
+        }
+        const fallback = pdfModal.querySelector('.pdf-mobile-fallback');
+        if (fallback) {
+            fallback.style.display = window.innerWidth <= 600 ? 'block' : 'none';
+        }
     }
-    // Event listener to CLOSE the modal
-    pdfModalClose.addEventListener('click', () => {
+
+    function closePdfModal() {
         pdfModal.style.display = 'none';
+        if (pdfIframe) {
+            pdfIframe.src = ''; // Unload to free RAM on mobile
+        }
+    }
+
+    // Event listener to OPEN the modal
+    fileStack.addEventListener('click', (event) => {
+        if (event.target.matches('.pdf-preview-overlay')) {
+            openPdfModal();
+        }
     });
 
+    // Event listener to CLOSE the modal
+    pdfModalClose.addEventListener('click', closePdfModal);
 
-    // Add this listener for the PDF modal background click
+    // Close on backdrop click
     pdfModal.addEventListener('click', (event) => {
-        // This is the crucial check: only close the modal if the click
-        // was directly on the semi-transparent background itself.
         if (event.target === pdfModal) {
-            
-            // Hide the modal
-            pdfModal.style.display = 'none';
-
-            // --- CRITICAL FIX ---
-            // This stops the click from bubbling up and being "heard"
-            // by the listener that closes the main folder.
+            closePdfModal();
             event.stopPropagation();
         }
     });
@@ -1163,7 +1177,7 @@ document.addEventListener('mousemove', (event) => {
     if (embeddedSlideshowElement) {
         setInterval(() => {
             embeddedSlideshowIndex = (embeddedSlideshowIndex % totalSlideshowImages) + 1;
-            embeddedSlideshowElement.src = `https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/amine.ink/assets/imgs/(${embeddedSlideshowIndex}).jpg`;
+            embeddedSlideshowElement.src = `assets/imgs/(${embeddedSlideshowIndex}).jpg`;
         }, 500);
     }
 
@@ -1196,7 +1210,7 @@ document.addEventListener('mousemove', (event) => {
                 // Start a NEW interval timer specifically for the MODAL
                 modalSlideshowInterval = setInterval(() => {
                     currentImageIndex = (currentImageIndex % totalSlideshowImages) + 1; // Correct loop logic
-                    modalImage.src = `https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/amine.ink/assets/imgs/(${currentImageIndex}).jpg`;
+                    modalImage.src = `assets/imgs/(${currentImageIndex}).jpg`;
                 }, 1500); // 500ms to match the original speed
             }
             
@@ -1258,6 +1272,13 @@ document.addEventListener('mousemove', (event) => {
         event.stopPropagation();
     });
 
+    // Inactivity timer to open the cabinet automatically
+    setTimeout(() => {
+        if (!cabinet.classList.contains('is-open')) {
+            toggleCabinet();
+        }
+    }, 30000); // 30-second inactivity timer
+
     // Check for #resume hash on page load
     if (window.location.hash === '#resume') {
         // If the cabinet is closed, open it first.
@@ -1270,5 +1291,5 @@ document.addEventListener('mousemove', (event) => {
 });
 let i = 1;
 setInterval(() => {
-  document.getElementById('slideshow').src = `https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/amine.ink/assets/imgs/(${i = (i % 83) + 2}).jpg`;
+  document.getElementById('slideshow').src = `assets/imgs/(${i = (i % 83) + 2}).jpg`;
 }, 500);

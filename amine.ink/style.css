@@ -40,19 +40,21 @@
 
         .collage-image {
             position: absolute;
-            width: 5vw;
+            width: clamp(50px, 8vw, 110px);
             border: 1px solid white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             
-            /* --- CRITICAL --- */
             /* Start each image as invisible */
             opacity: 0;
+            pointer-events: none;
+            will-change: opacity, transform;
+            backface-visibility: hidden;
             
-            /* Prepare a smooth fade-in transition for when we make it visible */
-            transition: opacity 0.7s ease;
+            /* Prepare a smooth fade-in transition */
+            transition: opacity 0.6s ease;
         }
 
-        /* This new class will be added by JavaScript to make a single image appear */
+        /* This class is added by JS to trigger fade-in */
         .collage-image.is-visible {
             opacity: 1;
         }
@@ -61,6 +63,8 @@
             position: relative;
             width: 100%;
             max-width: 700px;
+            will-change: transform;
+            backface-visibility: hidden;
             transition: transform var(--anim-duration) var(--anim-ease);
         }
         
@@ -90,28 +94,14 @@
                         opacity var(--anim-duration) var(--anim-ease),
                         filter var(--anim-duration) var(--anim-ease);
             cursor: pointer;
-            
-            /* Apply bouncing animation when closed */
-            animation: door-bounce 2s infinite ease-in-out;
-        }
-
-        @keyframes door-bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-8px);
-            }
         }
 
         .cabinet-front:hover:not(.no-hover) {
-            animation-play-state: paused;
             transform: translateY(-5px);
         }
 
         .file-cabinet-container.is-open .cabinet-front {
             z-index: 4;
-            animation: none; /* Stop bounce when open */
         }
 
         .door-handle-recess {
@@ -145,37 +135,6 @@
             position: relative;
             border: 2px solid black;
             background-color: #E6E6E6;
-        }
-
-        .swipe-up-indicator {
-            position: absolute;
-            top: 25px; /* Above the handle */
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: 'VT323', monospace;
-            font-size: 16px;
-            color: black;
-            pointer-events: none;
-            opacity: 0.8;
-            animation: swipe-bounce 1.5s infinite;
-        }
-
-        @keyframes swipe-bounce {
-            0%, 100% {
-                transform: translateX(-50%) translateY(0);
-                opacity: 0.5;
-            }
-            50% {
-                transform: translateX(-50%) translateY(-10px);
-                opacity: 1;
-            }
-        }
-
-        .file-cabinet-container.is-open .swipe-up-indicator {
-            display: none;
         }
 
         .cabinet-body::before {
@@ -953,4 +912,195 @@ body.folder-is-expanded-globally #intro-text {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS (TABLETS & PHONES)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    body {
+        padding: 12px 8px;
+        font-size: 14px;
+        align-items: flex-start;
+        padding-top: 30px;
+    }
+
+    body.folder-is-expanded-globally {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #intro-text {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: 100%;
+        font-size: 13px;
+        line-height: 1.15;
+        height: auto;
+        min-height: 50px;
+        margin-bottom: 16px;
+    }
+
+    .cabinet-is-open #intro-text {
+        filter: blur(1px);
+        opacity: 0.8;
+    }
+
+    .file-cabinet-container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .cabinet-front {
+        height: 160px;
+        gap: 20px;
+    }
+
+    .file-cabinet-container.is-open .cabinet-front {
+        transform: translateY(420px);
+    }
+
+    .file-cabinet-container.folder-is-expanded .cabinet-front {
+        transform: translateY(420px) translateY(320px);
+    }
+
+    .file-stack {
+        padding-top: 24px;
+    }
+
+    .file-cabinet-container.is-open .file-stack {
+        height: 420px;
+    }
+
+    .file-cabinet-container.folder-is-expanded .file-stack {
+        height: min(720px, 86vh);
+    }
+
+    .file-folder.is-expanded {
+        width: 100% !important;
+        left: 0 !important;
+        height: calc(86vh - 20px) !important;
+    }
+
+    .file-folder.move-up {
+        transform: translateY(-80vh);
+    }
+
+    .file-folder.move-down {
+        transform: translateY(80vh);
+    }
+
+    .tab {
+        width: 85px !important;
+        font-size: 13px !important;
+        padding: 0 4px !important;
+        left: calc(var(--random-factor) * (100% - 85px)) !important;
+    }
+
+    .pulled-folder-title {
+        font-size: 16px;
+        line-height: 1.2;
+    }
+
+    .folder-controls {
+        gap: 6px;
+    }
+
+    .folder-control-button {
+        width: 34px;
+        height: 34px;
+        font-size: 20px;
+    }
+
+    .folder-content-area {
+        padding: 24px 10px 15px 10px;
+    }
+
+    .pulled-folder-text {
+        font-size: 13px;
+        line-height: 1.25;
+        padding: 8px;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .project-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .pdf-modal-content {
+        width: 95%;
+        height: 92vh;
+    }
+
+    #audio-control-button {
+        right: 12px;
+        top: 8px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .cabinet-base {
+        top: 420px;
+    }
+
+    .file-cabinet-container.folder-is-expanded .cabinet-base {
+        transform: translateY(320px);
+    }
+
+    #cabinet-sticker {
+        width: 50px;
+        bottom: 10px;
+        right: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 8px 4px;
+        padding-top: 20px;
+    }
+
+    #intro-text {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+
+    .door-handle-recess {
+        width: 150px;
+        height: 32px;
+    }
+
+    .secret-files-label {
+        font-size: 18px;
+        padding: 6px 12px;
+    }
+
+    .tab {
+        width: 72px !important;
+        font-size: 11px !important;
+        left: calc(var(--random-factor) * (100% - 72px)) !important;
+    }
+
+    .folder-control-button {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    .pulled-folder-title {
+        font-size: 14px;
+    }
+
+    .file-folder.is-expanded {
+        height: calc(88vh - 15px) !important;
+    }
 }

@@ -8,24 +8,17 @@
     <link href='https://fonts.googleapis.com/css2?family=VT323&display=swap' rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="ico.ico">
-    <meta property="og:image" content="https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/amine.ink/assets/imgs/ogimage.png">
+    <meta property="og:image" content="/assets/imgs/ogimage.png">
 </head>
 <body>
     <div id="background-collage"></div>
     <div id="intro-text"></div>
     <div id="cabinet" class="file-cabinet-container">
         <div class="cabinet-front">
-            <!-- Swipe Up Indicator -->
-            <div class="swipe-up-indicator">
-                <svg width="24" height="12" viewBox="0 0 24 12" fill="none" stroke="black" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
-                    <polyline points="4 10 12 4 20 10"></polyline>
-                </svg>
-            </div>
-
             <div class="door-handle-recess"></div>
             
             <!-- ADD THIS LINE FOR THE STICKER -->
-            <img src="https://pub-ad0cab8325564e91b51bba350c9b9425.r2.dev/resume/amine.ink/assets/imgs/sticker(1).png" alt="A cool sticker on the cabinet" id="cabinet-sticker">
+            <img src="assets/imgs/sticker(1).png" alt="A cool sticker on the cabinet" id="cabinet-sticker">
             
              <div id="cabinet-toggle-button" class="secret-files-label">Amine's Portfolio</div>
         </div>
@@ -38,11 +31,11 @@
         <div class="cabinet-base"></div>
     </div>
     
-    <audio id="about-me-audio" src="assets/audio/about_me.mp3" preload="auto" hidden></audio>
-    <audio id="experiences-audio" src="assets/audio/experiences.mp3" preload="auto" hidden></audio>
-    <audio id="personality-audio" src="assets/audio/personality.mp3" preload="auto" hidden></audio>
-    <audio id="skills-audio" src="assets/audio/skills.mp3" preload="auto" hidden></audio>
-    <audio id="what-ive-done-audio" src="assets/audio/What I’ve Done/what-i-ve-done-as-a-co-zqn3xjfs-2025-09-03-.mp3" preload="metadata"></audio>
+    <audio id="about-me-audio" src="assets/audio/about_me.mp3" preload="none" hidden></audio>
+    <audio id="experiences-audio" src="assets/audio/experiences.mp3" preload="none" hidden></audio>
+    <audio id="personality-audio" src="assets/audio/personality.mp3" preload="none" hidden></audio>
+    <audio id="skills-audio" src="assets/audio/skills.mp3" preload="none" hidden></audio>
+    <audio id="what-ive-done-audio" src="assets/audio/what-i-ve-done.mp3" preload="none" hidden></audio>
 
     <script src="content.js"></script>
     <script src="assets/data/about_me.js"></script>
@@ -67,9 +60,13 @@
                 <button class="folder-control-button" title="Instagram" data-action="link" data-value="https://instagram.com/amine_elmoufid"><img src='https://img.icons8.com/?size=100&id=ZOFC5nSr215Y&format=png&color=FFFFFF' style='height: 20px'></button>
                 <button class="folder-control-button" title="Email" data-action="copy" data-value="amine.elmoufid.personal@gmail.com" data-link="mailto:amine.elmoufid.personal@gmail.com"><img src='https://img.icons8.com/?size=100&id=63489&format=png&color=FFFFFF' style='height: 20px'></button>
                 <button class="folder-control-button" title="Phone / WhatsApp" data-action="copy" data-value="+212675223453" data-link="https://wa.me/212675223453"><img src='https://img.icons8.com/?size=100&id=fAnexogbxI5v&format=png&color=FFFFFF' style='height: 20px'></button>
-                <button class="folder-control-button" id="download-button" title="Download Resume" data-action="download" data-value="assets/Resume amine elmoufid.pdf" data-link="https://amine-elmoufid.ink/assets/Resume%20amine%20elmoufid.pdf"><img src='https://img.icons8.com/?size=100&id=vk3CfSUT5UA6&format=png&color=FFFFFF' style='height: 20px'></button>
+                <button class="folder-control-button" id="download-button" title="Download Resume" data-action="download" data-value="assets/Resume amine elmoufid.pdf" data-link="assets/Resume%20amine%20elmoufid.pdf"><img src='https://img.icons8.com/?size=100&id=vk3CfSUT5UA6&format=png&color=FFFFFF' style='height: 20px'></button>
             </div>  
-            <iframe id="pdf-modal-iframe" src="../index.html" width="100%" height="100%" frameborder="0"></iframe>
+            <div class="pdf-mobile-fallback" style="display: none; padding: 20px; text-align: center; color: white;">
+                <p style="margin-bottom: 15px; font-size: 18px;">PDF preview may not be supported directly in your mobile browser.</p>
+                <a href="assets/Resume%20amine%20elmoufid.pdf" target="_blank" download class="folder-control-button" style="display: inline-flex; width: auto; padding: 10px 20px; font-size: 18px; color: white; border-color: white;">Download / Open PDF</a>
+            </div>
+            <iframe id="pdf-modal-iframe" src="" data-src="assets/Resume amine elmoufid.pdf" width="100%" height="100%" frameborder="0"></iframe>
         </div>
     </div>
 

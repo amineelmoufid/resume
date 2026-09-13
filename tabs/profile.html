@@ -241,6 +241,17 @@
         function fitLayout() {
             const canvas = document.getElementById('resume-canvas');
             const wrapper = document.querySelector('.resume-wrapper');
+            if (!canvas) return;
+
+            // Mobile screens: Use responsive layout without Panzoom distortion
+            if (window.innerWidth <= 768) {
+                if (pz) {
+                    try { pz.destroy(); } catch (e) {}
+                    pz = null;
+                }
+                canvas.style.transform = 'none';
+                return;
+            }
             
             // Read the actual resume width from CSS variable (set by script.js from Firebase)
             const rootStyles = getComputedStyle(document.documentElement);
@@ -271,12 +282,16 @@
                     startScale: scale
                 });
                 
-                canvas.parentElement.addEventListener('wheel', pz.zoomWithWheel);
+                if (canvas.parentElement) {
+                    canvas.parentElement.addEventListener('wheel', pz.zoomWithWheel);
+                }
                 
                 // Set initial position to center
                 setTimeout(() => {
-                    pz.zoom(scale, { animate: false });
-                    pz.pan(0, 0, { animate: false });
+                    if (pz) {
+                        pz.zoom(scale, { animate: false });
+                        pz.pan(0, 0, { animate: false });
+                    }
                 }, 10);
             } else {
                 pz.zoom(scale, { animate: true });

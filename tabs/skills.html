@@ -864,8 +864,8 @@
         }
 
         @media (max-width: 480px) {
-            .header h1 { font-size: 48px; letter-spacing: -2px; }
-            .container { padding: 80px 16px 120px 16px; }
+            .header h1 { font-size: clamp(32px, 12vw, 44px); letter-spacing: -1px; word-break: break-word; }
+            .container { padding: 60px 14px 100px 14px; }
             .sys-data.data-tr, .sys-data.data-br { display: none; }
             .ticker-inner { gap: 40px; }
         }

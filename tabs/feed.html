@@ -305,7 +305,6 @@
             cursor: pointer;
             margin-bottom: 28px;
             border: 1px solid var(--border-color);
-            will-change: transform, filter, opacity;
             transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1) 0s,
                         filter 0.3s ease 0s,
                         opacity 0.3s ease 0s,
@@ -322,14 +321,16 @@
                         box-shadow 0.5s ease 0.5s;
         }
 
-        /* ── ADVANCED LAYOUT RESHAPING (Preserved) ── */
-        .bento-grid:has(.card:hover) .card:not(:hover) {
-            transform: scale(0.95);
-            filter: brightness(0.4) blur(4px);
-            opacity: 0.4;
-            transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1) 0.5s,
-                        filter 0.7s ease 0.5s,
-                        opacity 0.7s ease 0.5s;
+        /* ── ADVANCED LAYOUT RESHAPING (Preserved on devices with precision pointer) ── */
+        @media (hover: hover) and (pointer: fine) {
+            .bento-grid:has(.card:hover) .card:not(:hover) {
+                transform: scale(0.95);
+                filter: brightness(0.4) blur(4px);
+                opacity: 0.4;
+                transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1) 0.5s,
+                            filter 0.7s ease 0.5s,
+                            opacity 0.7s ease 0.5s;
+            }
         }
 
         .card-inner {

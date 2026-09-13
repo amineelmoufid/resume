@@ -88,9 +88,12 @@
             width: 12px; height: 12px; border-radius: 50%; background-color: var(--white);
             opacity: 0.8; transition: var(--transition); cursor: pointer;
         }
-        .window-controls:hover .custom-dot:nth-child(1) { background-color: #ff5f56; opacity: 1; }
-        .window-controls:hover .custom-dot:nth-child(2) { background-color: #ffbd2e; opacity: 1; }
-        .window-controls:hover .custom-dot:nth-child(3) { background-color: #27c93f; opacity: 1; }
+        @media (hover: hover) and (pointer: fine) {
+            .window-controls:hover .custom-dot:nth-child(1) { background-color: #ff5f56; opacity: 1; }
+            .window-controls:hover .custom-dot:nth-child(2) { background-color: #ffbd2e; opacity: 1; }
+            .window-controls:hover .custom-dot:nth-child(3) { background-color: #27c93f; opacity: 1; }
+            .tab:hover:not(.active) { background-color: rgba(255, 255, 255, 0.08); color: rgba(255,255,255,1); }
+        }
 
         .tabs-container::-webkit-scrollbar { display: none; }
 
@@ -103,13 +106,36 @@
         }
 
         @media (max-width: 768px) {
-            .tab { min-width: 60px; padding: 0 10px; font-size: 11px; gap: 6px; }
+            body {
+                align-items: stretch;
+                min-height: 100vh;
+                height: 100vh;
+                overflow: hidden;
+            }
+            .browser-mockup {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 100vh !important;
+                min-height: 100vh !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            .browser-content {
+                border-radius: 0 !important;
+            }
+            .toolbar-area {
+                padding: 8px 10px;
+                gap: 8px;
+                border-radius: 0 !important;
+            }
+            .tab { min-width: 55px; padding: 0 8px; font-size: 11px; gap: 4px; }
             .tab-logo { display: none; }
-            .window-controls { margin-right: 8px; gap: 4px; }
+            .window-controls { margin-right: 6px; gap: 4px; }
             .custom-dot { width: 8px; height: 8px; }
+            .address-bar { height: 36px; padding: 0 10px; font-size: 12px; }
+            .tabs-area { height: 42px; padding: 0 8px; }
         }
-
-        .tab:hover:not(.active) { background-color: rgba(255, 255, 255, 0.08); color: rgba(255,255,255,1); }
         .tab.active { background-color: var(--surface-primary); color: var(--content-primary); z-index: 10; }
         .tab.active::before, .tab.active::after {
             content: ''; position: absolute; bottom: 0; width: 12px; height: 12px;
@@ -159,12 +185,14 @@
             flex: 1; background-color: var(--white);
             border-bottom-left-radius: var(--radius-window); border-bottom-right-radius: var(--radius-window);
             overflow: hidden; display: flex; position: relative; transition: all 0.3s ease;
+            -webkit-overflow-scrolling: touch;
         }
         .browser-content iframe { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             border: none; background: #ffffff; 
             opacity: 0; pointer-events: none; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            -webkit-overflow-scrolling: touch;
         }
         .browser-content iframe.active { opacity: 1; pointer-events: auto; visibility: visible; }
 
@@ -642,12 +670,23 @@
             if (activeTab) {
                 urlInput.value = activeTab.url;
                 
-                // Hide all iframes
-                Object.values(iframePool).forEach(ifrm => ifrm.classList.remove('active'));
+                // Hide inactive iframes and pause their background execution
+                Object.entries(iframePool).forEach(([src, ifrm]) => {
+                    const isNowActive = (src === activeTab.src);
+                    if (!isNowActive) {
+                        ifrm.classList.remove('active');
+                        try {
+                            ifrm.contentWindow?.postMessage({ type: 'TAB_VISIBILITY', visible: false }, '*');
+                        } catch (e) {}
+                    }
+                });
                 
                 // Show/Create active iframe
                 const iframe = getOrCreateIframe(activeTab.src, activeTab.title);
                 iframe.classList.add('active');
+                try {
+                    iframe.contentWindow?.postMessage({ type: 'TAB_VISIBILITY', visible: true }, '*');
+                } catch (e) {}
                 
                 // Finish loading visual if it's already there
                 setTimeout(finishLoading, 200);
@@ -1044,18 +1083,35 @@
 
         // --- FINAL INITIALIZATION ---
         window.addEventListener('load', () => {
-            // First render logic
+            // First render logic: mount initial active tab only
             if (tabsData.length > 0 && !activeTabId) {
                 selectTab(tabsData[0].id, true);
             }
 
-            // INSTANT LOADING CACHE: Initialize all unique available sections in hidden iframes
-            setTimeout(() => {
-                console.log('Priming background sections for instant access...');
-                ALL_AVAILABLE_TABS.forEach(t => {
-                    getOrCreateIframe(t.src, t.title);
-                });
-            }, 1000);
+            // PROGRESSIVE IDLE PRELOADING:
+            // Mount only the active tab immediately to keep network free and fast.
+            // Gently pre-warm remaining tabs one by one when the browser is idle.
+            const idlePreloadTabs = () => {
+                const unmounted = ALL_AVAILABLE_TABS.filter(t => !iframePool[t.src]);
+                let idx = 0;
+                function preloadNext() {
+                    if (idx < unmounted.length) {
+                        const targetTab = unmounted[idx];
+                        idx++;
+                        if (!iframePool[targetTab.src]) {
+                            getOrCreateIframe(targetTab.src, targetTab.title);
+                        }
+                        setTimeout(preloadNext, 2500);
+                    }
+                }
+                setTimeout(preloadNext, 2500);
+            };
+
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => idlePreloadTabs(), { timeout: 4000 });
+            } else {
+                setTimeout(idlePreloadTabs, 2500);
+            }
 
             // Then handle hash if any
             setTimeout(handleHashNavigation, 500);

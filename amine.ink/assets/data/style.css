@@ -3,8 +3,11 @@
             --anim-ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        body {
+        html {
             background-color: #E6E6EE;
+        }
+
+        body {
             font-family: 'VT323', monospace;
             font-size: 14px;
             display: flex;
@@ -17,10 +20,51 @@
             overflow: hidden;
         }
 
+        #background-collage {
+            position: fixed;
+            top: 25vh;
+            left: 0;
+            width: 100vw;
+            height: 75vh;
+            z-index: -10;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 1; /* Start fully visible */
+            transition: opacity 0.5s ease-in-out; /* Animate the opacity */
+        }
+
+        #background-collage.is-hidden {
+            opacity: 0; /* Fade to fully invisible */
+            pointer-events: none; /* Also disable clicks when hidden */
+        }
+
+        .collage-image {
+            position: absolute;
+            width: clamp(50px, 8vw, 110px);
+            border: 1px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            
+            /* Start each image as invisible */
+            opacity: 0;
+            pointer-events: none;
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+            
+            /* Prepare a smooth fade-in transition */
+            transition: opacity 0.6s ease;
+        }
+
+        /* This class is added by JS to trigger fade-in */
+        .collage-image.is-visible {
+            opacity: 1;
+        }
+
         .file-cabinet-container {
             position: relative;
             width: 100%;
             max-width: 700px;
+            will-change: transform;
+            backface-visibility: hidden;
             transition: transform var(--anim-duration) var(--anim-ease);
         }
         
@@ -111,7 +155,7 @@
             background-color: #1a1a1a;
             filter: none;
         }
-
+        
         .file-cabinet-container.folder-is-expanded .cabinet-body {
             z-index: 20;
         }
@@ -253,7 +297,53 @@
             transition-delay: 0.2s, 0s;
         }
 
-        .pulled-folder-title { margin: 0; font-size: 18px; margin-bottom: 15px; }
+        .folder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .pulled-folder-title { 
+            margin: 0; 
+            font-size: 18px; 
+            padding-right: 15px; /* Space between title and controls */
+        }
+
+        .folder-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .folder-control-button {
+            font-family: 'VT323', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: transparent;
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            text-decoration: none;
+            color: black;
+            line-height: 1;
+            padding: 0;
+        }
+        .folder-control-button:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        /* Add a 20px gap after the zoom buttons in non-resume folders */
+        .folder-controls:not(:has(#download-button)) #zoom-in-button {
+            margin-right: 20px;
+        }
+
         .pulled-folder-text { 
             position: relative;
             font-size: 14px; 
@@ -266,8 +356,25 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.65' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
         }
 
+        .pulled-folder-text iframe {
+            width: 100%;
+            height: 100%;
+            transform-origin: top left; /* Zoom from the top-left corner */
+            transition: transform 0.2s ease-out; /* Makes the zoom animation smooth */
+        }
 
-        .close-folder-button { font-family: sans-serif; font-size: 24px; font-weight: bold; cursor: pointer; position: absolute; top: 20px; right: 20px; }
+
+        .close-folder-button { 
+            font-family: sans-serif; 
+            font-size: 28px; 
+            font-weight: bold; 
+            border: none;
+            background: transparent;
+        }
+        .close-folder-button:hover {
+            background-color: transparent;
+            color: #8a3434; /* red highlight color */
+        }
 
         .tab { position: absolute; top: -18px; height: 20px; border: 2px solid black; border-bottom: none; border-radius: 6px 6px 0 0; display: flex; align-items: center; justify-content: center; padding: 0 10px; white-space: nowrap; background-color: black; color: white; box-sizing: border-box; cursor: pointer; width: 120px; font-size: 16px; box-shadow: -1px 0 0 white, 1px 0 0 white, 0 -1px 0 white; left: calc(var(--random-factor) * (100% - 120px)); transition: top 0.2s var(--anim-ease), height 0.2s var(--anim-ease); }
 
@@ -517,8 +624,8 @@ body.folder-is-expanded-globally #intro-text {
 
 #audio-control-button {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 170px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -596,4 +703,404 @@ body.folder-is-expanded-globally #intro-text {
 .audio-consent-buttons button:hover {
     background-color: #333;
     color: #fff;
+}
+
+/* Optional: Set a base width for the 'No' button for consistency */
+#confirm-audio-no {
+    width: 60px;
+}
+
+/* Set a larger, specific width for the 'Yes' button */
+#confirm-audio-yes {
+    width: 200px;
+}
+
+/* Add this new rule to the end of your style.css file */
+#cabinet-sticker {
+    position: absolute; /* This is crucial for positioning it on the door */
+    width: 60px;        /* Sets the size of the sticker */
+    bottom: 15px;       /* Puts it 15px from the bottom of the door */
+    right: 20px;        /* Puts it 20px from the right of the door */
+    transform: rotate(-12deg); /* This gives it the slightly crooked look */
+    opacity: 0.9;       /* Makes it look slightly faded and more realistic */
+    z-index: 16;        /* Ensures it sits on top of the door's main surface */
+    pointer-events: none; /* Prevents the sticker from interfering with clicks on the door */
+}
+
+/* Styles for the new rotating sticker */
+#rotating-sticker {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    bottom: 15px;
+    left: 20px;
+    transform: rotate(8deg);
+    z-index: 16;
+    border: 3px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    object-fit: cover; /* Ensures non-square images fill the space nicely */
+}
+
+/* --- STYLES FOR PDF MODAL AND PREVIEW --- */
+
+/* The main modal overlay */
+#pdf-modal {
+    display: none; position: fixed; z-index: 10001;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center; align-items: center;
+}
+.pdf-modal-content {
+    width: 90%; height: 90vh;
+    background-color: #333;
+    display: flex; flex-direction: column;
+}
+.pdf-modal-header {
+    display: flex; justify-content: flex-end; align-items: center;
+    padding: 8px 15px; background-color: #222; gap: 10px;
+}
+#pdf-modal-close {
+    font-size: 28px; color: #aaa; cursor: pointer;
+    margin-right: auto; /* Pushes the close button to the far left */
+}
+#pdf-modal-close:hover { color: white; }
+
+.pdf-modal-header button, .pdf-modal-header a {
+    font-family: 'VT323', monospace; font-size: 16px;
+    border: 1px solid #888; background-color: #444; color: white;
+    padding: 5px 12px; cursor: pointer; text-decoration: none;
+}
+.pdf-modal-header button:hover, .pdf-modal-header a:hover { background-color: #666; }
+
+/* This rule ensures the download button in the PDF modal header has some space */
+.pdf-modal-header #pdf-download-link {
+    margin-right: 20px;
+}
+
+#pdf-modal-iframe {
+    flex-grow: 1; /* Makes the iframe fill the remaining space */
+    transition: transform 0.2s ease-out; /* Smooth zoom */
+}
+
+/* Styles for the clickable preview in the folder */
+.pdf-preview-container {
+    position: relative; width: 100%; height: 100%;
+}
+.pdf-preview-iframe {
+    width: 100%; height: 100%; border: none;
+    pointer-events: none; /* CRITICAL: Allows clicks to pass through to the overlay */
+}
+.pdf-preview-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 24px; color: white;
+    cursor: pointer; opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.pdf-preview-container:hover .pdf-preview-overlay {
+    opacity: 1;
+}
+
+/* Image Modal Styles */
+.image-modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 10003; /* Above skill modal */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.image-modal-content {
+    max-width: 90%;
+    max-height: 90vh;
+    display: block;
+    margin: auto;
+}
+
+.image-modal-close {
+    color: #fff;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.image-modal-close:hover,
+.image-modal-close:focus {
+    color: #bbb;
+    text-decoration: none;
+}
+
+.image-modal-close:hover,
+.image-modal-close:focus {
+    color: #bbb;
+    text-decoration: none;
+}
+
+/* Info Modal for Contact Buttons */
+.info-modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 10006; /* Above audio consent */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.info-modal-content {
+    position: relative;
+    background-color: #fefefe;
+    padding: 25px 30px;
+    border: 2px solid black;
+    text-align: center;
+    font-size: 16px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.info-modal-content h3 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.info-modal-content p {
+    word-break: break-all;
+    background-color: #eee;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+#info-modal-actions button {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    padding: 8px 20px;
+    border: 2px solid black;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.2s, color 0.2s;
+    width: 100%;
+}
+
+#info-modal-actions button:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+#info-modal-actions button:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.info-modal-close {
+    color: #aaa;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS (TABLETS & PHONES)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    body {
+        padding: 12px 8px;
+        font-size: 14px;
+        align-items: flex-start;
+        padding-top: 30px;
+    }
+
+    body.folder-is-expanded-globally {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #intro-text {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: 100%;
+        font-size: 13px;
+        line-height: 1.15;
+        height: auto;
+        min-height: 50px;
+        margin-bottom: 16px;
+    }
+
+    .cabinet-is-open #intro-text {
+        filter: blur(1px);
+        opacity: 0.8;
+    }
+
+    .file-cabinet-container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .cabinet-front {
+        height: 160px;
+        gap: 20px;
+    }
+
+    .file-cabinet-container.is-open .cabinet-front {
+        transform: translateY(420px);
+    }
+
+    .file-cabinet-container.folder-is-expanded .cabinet-front {
+        transform: translateY(420px) translateY(320px);
+    }
+
+    .file-stack {
+        padding-top: 24px;
+    }
+
+    .file-cabinet-container.is-open .file-stack {
+        height: 420px;
+    }
+
+    .file-cabinet-container.folder-is-expanded .file-stack {
+        height: min(720px, 86vh);
+    }
+
+    .file-folder.is-expanded {
+        width: 100% !important;
+        left: 0 !important;
+        height: calc(86vh - 20px) !important;
+    }
+
+    .file-folder.move-up {
+        transform: translateY(-80vh);
+    }
+
+    .file-folder.move-down {
+        transform: translateY(80vh);
+    }
+
+    .tab {
+        width: 85px !important;
+        font-size: 13px !important;
+        padding: 0 4px !important;
+        left: calc(var(--random-factor) * (100% - 85px)) !important;
+    }
+
+    .pulled-folder-title {
+        font-size: 16px;
+        line-height: 1.2;
+    }
+
+    .folder-controls {
+        gap: 6px;
+    }
+
+    .folder-control-button {
+        width: 34px;
+        height: 34px;
+        font-size: 20px;
+    }
+
+    .folder-content-area {
+        padding: 24px 10px 15px 10px;
+    }
+
+    .pulled-folder-text {
+        font-size: 13px;
+        line-height: 1.25;
+        padding: 8px;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .project-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .pdf-modal-content {
+        width: 95%;
+        height: 92vh;
+    }
+
+    #audio-control-button {
+        right: 12px;
+        top: 8px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .cabinet-base {
+        top: 420px;
+    }
+
+    .file-cabinet-container.folder-is-expanded .cabinet-base {
+        transform: translateY(320px);
+    }
+
+    #cabinet-sticker {
+        width: 50px;
+        bottom: 10px;
+        right: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 8px 4px;
+        padding-top: 20px;
+    }
+
+    #intro-text {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+
+    .door-handle-recess {
+        width: 150px;
+        height: 32px;
+    }
+
+    .secret-files-label {
+        font-size: 18px;
+        padding: 6px 12px;
+    }
+
+    .tab {
+        width: 72px !important;
+        font-size: 11px !important;
+        left: calc(var(--random-factor) * (100% - 72px)) !important;
+    }
+
+    .folder-control-button {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    .pulled-folder-title {
+        font-size: 14px;
+    }
+
+    .file-folder.is-expanded {
+        height: calc(88vh - 15px) !important;
+    }
 }
