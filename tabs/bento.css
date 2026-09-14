@@ -1286,8 +1286,8 @@ body {
 .fw-footer-note-new {
     position: relative;
     color: rgba(255,255,255,0.45);
-    font-family: 'Gloria Hallelujah', cursive, sans-serif;
-    font-size: 16px;
+    font-family: 'Gochi Hand', 'Kalam', 'Patrick Hand', cursive, sans-serif;
+    font-size: 20px;
     transform: rotate(-3deg);
     padding-right: 10px;
     line-height: 1.4;
