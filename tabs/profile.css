@@ -689,13 +689,14 @@ body {
 
 /* ================== INTERACTIVE AUDIO SENTENCES ================== */
 .audio-sentence {
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border-radius: 2px;
-    padding: 0 2px;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    border-radius: 4px !important;
+    padding: 2px 2px !important;
+    margin: 0 -2px !important;
 }
 
 .audio-sentence:hover {
-    background-color: rgba(26, 26, 26, 0.1);
-    color: #000;
+    background-color: rgba(26, 26, 26, 0.12) !important;
+    color: #000 !important;
 }
