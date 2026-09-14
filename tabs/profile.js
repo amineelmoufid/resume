@@ -208,9 +208,29 @@ function applyResumeData(data) {
 
     // Setup Popup Events
     setupPopups();
+    setupAudioSentences();
 
     // Recalculate layout after data injection (with rAF to ensure CSS vars are painted)
     if (window.recalculateFit) requestAnimationFrame(() => window.recalculateFit());
+}
+
+function setupAudioSentences() {
+    const sentences = document.querySelectorAll('.audio-sentence');
+    const audioPlayer = document.getElementById('who-i-am-audio');
+    
+    if (!audioPlayer) return;
+
+    sentences.forEach(sentence => {
+        sentence.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const timeToJumpTo = parseFloat(sentence.getAttribute('data-time'));
+            if (!isNaN(timeToJumpTo)) {
+                audioPlayer.currentTime = timeToJumpTo;
+                audioPlayer.play().catch(err => console.log('Audio playback prevented by browser:', err));
+            }
+        };
+    });
 }
 
 function setupPopups() {

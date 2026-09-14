@@ -686,3 +686,16 @@ body {
         font-size: 12px;
     }
 }
+
+/* ================== INTERACTIVE AUDIO SENTENCES ================== */
+.audio-sentence {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+.audio-sentence:hover {
+    background-color: rgba(26, 26, 26, 0.1);
+    color: #000;
+}
