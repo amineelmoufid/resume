@@ -1103,4 +1103,12 @@ body.folder-is-expanded-globally #intro-text {
     .file-folder.is-expanded {
         height: calc(88vh - 15px) !important;
     }
-}
+} 
+ . a u d i o - s e n t e n c e   {   c u r s o r :   p o i n t e r   ! i m p o r t a n t ;   t r a n s i t i o n :   b a c k g r o u n d - c o l o r   0 . 2 s   e a s e   ! i m p o r t a n t ;   b o r d e r - r a d i u s :   4 p x   ! i m p o r t a n t ;   p a d d i n g :   2 p x   ! i m p o r t a n t ;   m a r g i n :   - 2 p x   ! i m p o r t a n t ;   }  
+ . a u d i o - s e n t e n c e : h o v e r   {   b a c k g r o u n d - c o l o r :   r g b a ( 0 ,   0 ,   0 ,   0 . 1 5 )   ! i m p o r t a n t ;   c o l o r :   # 0 0 0   ! i m p o r t a n t ;   }  
+ 
+.audio-sentence { cursor: pointer !important; transition: background-color 0.2s ease !important; border-radius: 4px !important; padding: 2px !important; margin: 0 -2px !important; }
+.audio-sentence:hover { background-color: rgba(0, 0, 0, 0.15) !important; color: #000 !important; }
+
+span[data-start], span[data-sentence-id] { cursor: pointer !important; transition: background-color 0.2s ease, color 0.2s ease !important; border-radius: 4px !important; padding: 0 4px !important; margin: 0 -4px !important; }
+span[data-start]:hover, span[data-sentence-id]:hover { background-color: rgba(0, 0, 0, 0.15) !important; color: #000 !important; }

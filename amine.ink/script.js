@@ -315,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 config.timestamps.forEach(item => {
                     const span = document.createElement('span');
+                    span.className = 'audio-sentence';
                     span.innerHTML = (item.html || item.text) + ' ';
                     span.dataset.start = item.start;
                     span.dataset.end = item.end;
