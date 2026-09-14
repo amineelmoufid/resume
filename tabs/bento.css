@@ -1283,10 +1283,11 @@ body {
     font-weight: 500;
 }
 
-.fw-footer-note-new {
+.fw-footer-note-new,
+.fw-footer-note-new span {
     position: relative;
     color: rgba(255,255,255,0.45);
-    font-family: 'Gochi Hand', 'Kalam', 'Patrick Hand', cursive, sans-serif;
+    font-family: 'Gochi Hand', 'Kalam', 'Patrick Hand', cursive, sans-serif !important;
     font-size: 20px;
     transform: rotate(-3deg);
     padding-right: 10px;
