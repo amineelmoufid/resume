@@ -1,14 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
-import { firebaseConfig } from "../data/firebase-config.js";
-
-// ─── Firebase ───
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-let currentRef = ref(db, 'resume');
+// ─── Local Storage & Static JSON Store (Zero Firebase) ───
 let activePage = 'resume';
-let unsubscribe = null;
-
 let D = {}; // currentData
 let selectedSection = null;
 let currentSubTab = null;
@@ -30,11 +21,6 @@ if (pageSwitcher) {
         rightTitle.textContent = 'Select a Section';
         rightPanel.innerHTML = '<div class="empty-state"><div class="empty-icon">✦</div><p>Click any section in the preview to edit its content here.</p></div>';
         
-        // Unsubscribe old listener
-        if (unsubscribe) unsubscribe();
-        
-        // Subscribe to new node
-        currentRef = ref(db, activePage);
         setupListener();
     });
 }
@@ -164,27 +150,41 @@ function scrubData(obj) {
     return finalScrub(clean);
 }
 
-// ─── Auto-save ───
+// ─── Auto-save (localStorage) & Export ───
 let saveTimeout;
 function triggerSave() {
     if (!dataLoaded) return;
     clearTimeout(saveTimeout);
-    statusPill.textContent = 'Saving...';
+    statusPill.textContent = 'Saving locally...';
     statusPill.className = 'status-pill saving';
-    saveTimeout = setTimeout(async () => {
+    saveTimeout = setTimeout(() => {
         try {
             const cleanD = scrubData(D);
-            console.log('Final payload to Firebase:', cleanD);
-            await set(currentRef, cleanD);
-            statusPill.textContent = 'All synced';
+            localStorage.setItem('editor_' + activePage, JSON.stringify(cleanD));
+            statusPill.textContent = 'Saved to browser';
             statusPill.className = 'status-pill';
         } catch (e) {
-            console.error('CRITICAL SYNC ERROR:', e);
-            statusPill.textContent = 'Sync failed (' + e.message.substring(0, 20) + '...)';
+            console.error('Local save error:', e);
+            statusPill.textContent = 'Save failed';
             statusPill.className = 'status-pill error';
         }
-    }, 800);
+    }, 500);
 }
+
+// Global Export JSON helper
+window.exportActiveJson = function() {
+    const cleanD = scrubData(D);
+    const blob = new Blob([JSON.stringify(cleanD, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = activePage + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    statusPill.textContent = 'Exported ' + activePage + '.json';
+    statusPill.className = 'status-pill';
+};
 
 // ─── Zoom ───
 function getIframeDims() {
@@ -1289,26 +1289,37 @@ function renderTypoBar() {
 }
 
 // ══════════════════════════════════════
-// FIREBASE LISTENER
+// LOCAL DATA LOADER
 // ══════════════════════════════════════
 function setupListener() {
-    unsubscribe = onValue(currentRef, (snapshot) => {
-        let data = snapshot.val();
-        dataLoaded = true;
-        if (data && typeof data === 'object') {
-            D = data;
+    const jsonPath = activePage === 'resume' ? '../data/resume.json' : '../data/bento.json';
+    const savedLocal = localStorage.getItem('editor_' + activePage);
+    
+    fetch(jsonPath)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+        })
+        .then(data => {
+            dataLoaded = true;
+            D = (savedLocal ? JSON.parse(savedLocal) : data) || {};
             syncDot.className = 'dot green';
-            syncLabel.textContent = 'Connected';
-        } else {
-            D = {}; 
-            syncDot.className = 'dot red';
-            syncLabel.textContent = data === null ? 'No data' : 'Data mismatch';
-        }
-        renderAll(); 
-    }, (error) => {
-        syncDot.className = 'dot red';
-        syncLabel.textContent = 'Offline';
-    });
+            syncLabel.textContent = savedLocal ? 'Loaded (Draft)' : 'Data Loaded';
+            renderAll();
+        })
+        .catch(err => {
+            console.warn('Local load error:', err);
+            if (savedLocal) {
+                dataLoaded = true;
+                D = JSON.parse(savedLocal);
+                syncDot.className = 'dot green';
+                syncLabel.textContent = 'Loaded (Draft)';
+                renderAll();
+            } else {
+                syncDot.className = 'dot red';
+                syncLabel.textContent = 'Load error';
+            }
+        });
 }
 
 // Finalize

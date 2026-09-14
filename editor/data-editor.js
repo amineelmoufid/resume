@@ -1,11 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue, get } from "firebase/database";
-import { firebaseConfig } from "../data/firebase-config.js";
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const resumeRef = ref(db, 'resume');
+// Local State (Zero Firebase)
 
 let currentData = {};
 let currentSection = 'header';
@@ -25,23 +18,22 @@ function triggerAutoSave() {
     statusEl.textContent = 'Changes detected...';
     statusEl.className = 'status-message saving';
     
-    saveTimeout = setTimeout(async () => {
-        statusEl.textContent = 'Syncing...';
+    saveTimeout = setTimeout(() => {
         try {
-            await set(resumeRef, currentData);
-            statusEl.textContent = 'Saved to cloud';
+            localStorage.setItem('editor_resume', JSON.stringify(currentData));
+            statusEl.textContent = 'Saved to browser';
             statusEl.className = 'status-message success';
             setTimeout(() => {
-                if (statusEl.textContent === 'Saved to cloud') {
+                if (statusEl.textContent === 'Saved to browser') {
                     statusEl.textContent = 'All systems go.';
                     statusEl.className = 'status-message';
                 }
             }, 2000);
         } catch (e) {
-            statusEl.textContent = 'Sync failed: ' + e.message;
+            statusEl.textContent = 'Save failed: ' + e.message;
             statusEl.className = 'status-message error';
         }
-    }, 1000); // 1s debounce
+    }, 500);
 }
 
 // Show status (Repurposed for auto-save notifications)
@@ -1377,28 +1369,20 @@ function createFormGroup(label, type, value, oninput) {
 }
 
 // Load data
-onValue(resumeRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-        currentData = data;
-        // ONLY re-render if the update didn't come from this local editor
-        if (!isLocalUpdate) {
+const savedResumeDraft = localStorage.getItem('editor_resume');
+fetch('../data/resume.json')
+    .then(res => res.json())
+    .then(data => {
+        currentData = (savedResumeDraft ? JSON.parse(savedResumeDraft) : data) || {};
+        renderForm();
+        showStatus(savedResumeDraft ? 'Loaded (from Draft)' : 'Data loaded');
+    })
+    .catch(err => {
+        if (savedResumeDraft) {
+            currentData = JSON.parse(savedResumeDraft);
             renderForm();
+            showStatus('Loaded (from Draft)');
+        } else {
+            showStatus('Error loading resume.json', 'error');
         }
-    } else {
-        seedData();
-    }
-}, (error) => {
-    showStatus('Error loading: ' + error.message, 'error');
-});
-
-async function seedData() {
-    try {
-        const response = await fetch('initial-data.json');
-        const initial = await response.json();
-        await set(resumeRef, initial);
-        showStatus('Seeded initial data');
-    } catch (e) {
-        showStatus('Seeding failed', 'error');
-    }
-}
+    });

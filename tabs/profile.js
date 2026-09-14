@@ -1,13 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-import { firebaseConfig } from "../data/firebase-config.js";
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const resumeRef = ref(db, 'resume');
-
-onValue(resumeRef, (snapshot) => {
-    const data = snapshot.val();
+function applyResumeData(data) {
     if (!data) return;
 
     // Apply Global Spacing
@@ -220,7 +211,7 @@ onValue(resumeRef, (snapshot) => {
 
     // Recalculate layout after data injection (with rAF to ensure CSS vars are painted)
     if (window.recalculateFit) requestAnimationFrame(() => window.recalculateFit());
-});
+}
 
 function setupPopups() {
     let popup = document.querySelector('.info-popup');
@@ -315,6 +306,19 @@ function setupPopups() {
         if (e.key === 'Escape' && isModalActive) closePopup();
     });
 }
+
+// Load resume data directly from static JSON on Cloudflare CDN
+fetch('../data/resume.json')
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        applyResumeData(data);
+    })
+    .catch(err => {
+        console.warn('Could not load ../data/resume.json, using static HTML fallback:', err);
+    });
 
 // Download PDF logic
 document.getElementById('download-btn').onclick = () => {

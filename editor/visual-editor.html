@@ -71,8 +71,11 @@
             <div class="bar-section" id="typography-controls">
                 <!-- Populated by JS -->
             </div>
-            <div class="bar-section bar-status">
-                <span id="save-status" class="status-pill">All synced</span>
+            <div class="bar-section bar-status" style="display:flex; gap:12px; align-items:center;">
+                <span id="save-status" class="status-pill">Local Data Loaded</span>
+                <button onclick="window.exportActiveJson()" style="background:#2563eb; color:white; border:none; border-radius:6px; padding:6px 14px; font-weight:600; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                    ⬇ Export JSON
+                </button>
             </div>
         </footer>
         <!-- Floating reopen buttons for collapsed panels -->
@@ -80,15 +83,6 @@
         <button class="reopen-btn right" onclick="document.getElementById('app').classList.remove('right-collapsed')">◀</button>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script type="importmap">
-        {
-          "imports": {
-            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-            "firebase/database": "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"
-          }
-        }
-    </script>
     <script type="module" src="visual-editor.js"></script>
 
 

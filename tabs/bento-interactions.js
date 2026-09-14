@@ -1,28 +1,11 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue } from "firebase/database";
-import { firebaseConfig } from "../data/firebase-config.js";
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const bentoRef = ref(db, 'bento');
-
-// Failsafe: If Firebase is slow, offline, or blocked, reveal default content after 1.5s
-setTimeout(() => {
-    document.querySelector('.bento-container')?.classList.add('loaded');
-    const loader = document.getElementById('bento-loader');
-    if (loader && !loader.classList.contains('hidden')) {
-        loader.classList.add('hidden');
-    }
-}, 1500);
-
-onValue(bentoRef, (snapshot) => {
-    const data = snapshot.val() || {};
+function initBentoWithData(data) {
+    data = data || {};
     document.querySelector('.bento-container')?.classList.add('loaded');
     
-    // Hide loading overlay
+    // Hide loading overlay immediately
     const loader = document.getElementById('bento-loader');
     if (loader) {
-        setTimeout(() => loader.classList.add('hidden'), 300);
+        loader.classList.add('hidden');
     }
 
     // Layout settings (spans and gaps) are now controlled solely via bento.css
@@ -552,4 +535,18 @@ onValue(bentoRef, (snapshot) => {
             window.copyStatusInfo();
         };
     }
-});
+}
+
+// Load bento data directly from static JSON on Cloudflare CDN
+fetch('../data/bento.json')
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        initBentoWithData(data);
+    })
+    .catch(err => {
+        console.warn('Could not load ../data/bento.json, falling back to defaults:', err);
+        initBentoWithData({});
+    });

@@ -1,0 +1,286 @@
+{
+  "avatar": {
+    "bio": "I am a creative strategist with a background in financial and analytical disciplines, currently focused on brand development, content creation, and digital experimentation. My work sits at the intersection of structure and creativity, where I combine strategic thinking with hands-on execution.<div><br></div><div>I approach marketing as a system rather than a set of isolated actions. My focus is on building coherent brand ecosystems—aligning message, visuals, and content to create consistency and long-term impact. I am involved across the full process, from concept development and planning to production and final delivery.</div><div><br></div><div>Through my experiences in hospitality, creative projects, and AI-driven environments, I have developed a practical understanding of how ideas translate into real outputs. I am particularly interested in improving creative workflows, building small tools, and exploring how AI can support more efficient and scalable production.</div><div><br></div><div>I work best in collaborative environments where ideas can be challenged and refined. I value clarity, consistency, and attention to detail, while maintaining a pragmatic approach to execution.</div>",
+    "image_url": "<br>",
+    "subtitle": "Click For More&nbsp;"
+  },
+  "collab": {
+    "btn_text": "Send a message now!",
+    "copy_text": "Email: amine.elmoufid.personal@gmail.com \nInstagram: https://www.instagram.com/amine_elmoufid/ \nLinkedIn: https://www.linkedin.com/in/amine-elmoufid/ \nWhatsApp: https://wa.me/212675223453 \nPhone Number: +212675223453",
+    "ig_url": "https://www.instagram.com/direct/t/118972766163183/",
+    "li_url": "https://www.linkedin.com/in/amine-elmoufid/",
+    "ph_num": "tel:+212675223453",
+    "text": "Let's turn your idea into reality with my design experience!",
+    "title": "Let's collab!",
+    "url": "mailto:amine.elmoufid.personal@gmail.com",
+    "wa_num": "https://wa.me/212675223453"
+  },
+  "experience": [
+    {
+      "bullets": [
+        "Developed and tested AI-driven workflows for creative production",
+        "Built simple tools and prototypes to support internal needs",
+        "Explored applications of AI in content creation and marketing",
+        "Assisted in structuring processes to improve efficiency and consistency"
+      ],
+      "explanation": "Contributed to the development of AI-supported creative workflows and digital solutions. Focused on building small tools and experimenting with AI to improve content production processes and ideation.",
+      "meta": "StartZone — Meknès, Morocco (On-site) | Sep 2025 – Dec 2025",
+      "title": "Creative AI Systems Producer (Voluntary Internship)"
+    },
+    {
+      "bullets": [
+        "Planned and executed social media content aligned with brand positioning",
+        "Developed and implemented campaign concepts (e.g. storytelling formats)",
+        "Produced and edited photo and video content",
+        "Managed editorial planning and publishing schedules",
+        "Ensured consistency with luxury hospitality standards in all outputs"
+      ],
+      "explanation": "Managed both the strategic and operational aspects of social media and content production for a luxury hospitality environment. Worked on aligning content with brand standards while maintaining consistent output.",
+      "meta": "Mövenpick Hotel Marrakech (5★) — Marrakech, Morocco | 2025 (111-day intensive residency)",
+      "title": "Community Manager"
+    },
+    {
+      "bullets": [
+        "Participated in building the brand identity from the ground up",
+        "Created content for web and social media platforms",
+        "Adapted content for different audiences and formats",
+        "Supported the launch phase through consistent content output"
+      ],
+      "explanation": "Contributed to the early-stage development of the brand by supporting identity creation and content production across platforms.",
+      "meta": "TM Morocco Running Camps — Remote | March 2025",
+      "title": "Content Creator (Internship)"
+    }
+  ],
+  "intro": {
+    "bio": "I am a creative strategist with a background in financial and analytical disciplines, currently focused on brand development, content creation, and digital experimentation. My work sits at the intersection of structure and creativity, where I combine strategic thinking with hands-on execution.<div><br></div><div>I approach marketing as a system rather than a set of isolated actions. My focus is on building coherent brand ecosystems—aligning message, visuals, and content to create consistency and long-term impact. I am involved across the full process, from concept development and planning to production and final delivery.</div><div><br></div><div>Through my experiences in hospitality, creative projects, and AI-driven environments, I have developed a practical understanding of how ideas translate into real outputs. I am particularly interested in improving creative workflows, building small tools, and exploring how AI can support more efficient and scalable production.</div><div><br></div><div>I work best in collaborative environments where ideas can be challenged and refined. I value clarity, consistency, and attention to detail, while maintaining a pragmatic approach to execution.</div>",
+    "status": "Copy My Informations",
+    "subtitle": "Brand Creative Strategist @Future_Marketista",
+    "title": "Hey, I'm Amine"
+  },
+  "layout": {
+    "bentoCardRadius": 43,
+    "bentoGap": 22,
+    "bentoMaxWidth": 1120,
+    "colLeftWidth": 255,
+    "colMidWidth": 440,
+    "fullPageWidth": 1123,
+    "gapHeaderTitleLinks": 5,
+    "gapInfoSkills": 18,
+    "gapLeftMid": 33,
+    "gapMidRight": 33,
+    "gapProfileInfo": 18,
+    "headerMarginBottom": 35,
+    "headerTitleWidth": 689,
+    "jobMarginBottom": 15,
+    "linksPaddingH": 9,
+    "linksPaddingV": 3.5,
+    "mainAreaPaddingLeft": 45,
+    "part1Order": [
+      "profile",
+      "technical_skills",
+      "core_skills"
+    ],
+    "part2Order": [
+      "who_i_am",
+      "jobs"
+    ],
+    "part3Order": [
+      "education",
+      "strengths",
+      "weaknesses",
+      "philosophy",
+      "seeking"
+    ],
+    "sectionMarginBottom": 25,
+    "sidebarUnitGap": 22,
+    "sidebarWidth": 315,
+    "spanAvatar": 2,
+    "spanCollab": 6,
+    "spanIntro": 8,
+    "spanServices": 5,
+    "spanTools": 4,
+    "spanWorks": 5
+  },
+  "physics": {
+    "attractionStrength": 0.0009000000000000004,
+    "frictionAir": 0.07999999999999997,
+    "gravity": 0.8999999999999997,
+    "restitution": 1.0499999999999998,
+    "showIndicator": 0
+  },
+  "services": [
+    {
+      "name": "Creative Direction",
+      "popup_content": "<h2>🎯 Creative Direction</h2><p>Responsible for guiding the overall creative vision of a project. I ensure alignment between concept, visuals, and execution, maintaining consistency and quality from initial idea through final delivery.</p>"
+    },
+    {
+      "name": "Storyboarding",
+      "popup_content": "<h2>🎯 Storyboarding</h2><p>Used to plan visual sequences in advance of production. I translate ideas into structured frames to clarify scenes, transitions, and pacing, helping ensure efficient and accurate execution.</p>"
+    },
+    {
+      "name": "Concept Development",
+      "popup_content": "<h2>🎯 Concept Development</h2><p>Involves shaping ideas from initial insight into clear and actionable directions. I focus on defining the core message, selecting the right creative angle, and ensuring feasibility across formats.</p>"
+    },
+    {
+      "name": "Brand Ecosystem Building",
+      "popup_content": "<h2>🎯 Brand Ecosystem Building</h2><p>Focused on creating consistent brand systems across different platforms and touchpoints. I align visual identity, messaging, and content to maintain coherence over time.</p>"
+    },
+    {
+      "name": "Editorial Planning",
+      "popup_content": "<h2>🎯 Editorial Planning</h2><p>Involves structuring content through calendars and publication plans. I ensure consistency in timing, messaging, and output based on defined priorities.</p>"
+    },
+    {
+      "name": "Content Strategy",
+      "popup_content": "<h2>🎯 Content Strategy</h2><p>Defines how content is positioned, created, and distributed. I align audience needs, platform requirements, and objectives to ensure relevance and effectiveness.</p>"
+    },
+    {
+      "name": "Video Production",
+      "popup_content": "<h2>🎬 Video Production</h2><p>Managing the preparation and execution of video shoots. I focus on organization, coordination, and maintaining quality throughout the production process.</p>"
+    },
+    {
+      "name": "Video Post-production",
+      "popup_content": "<h2>🎬 Video Post-production</h2><p>Editing and assembling content into a coherent final output. I work on pacing, sequencing, and clarity to ensure the message is effectively communicated.</p>"
+    },
+    {
+      "name": "Photography Direction",
+      "popup_content": "<h2>🎬 Photography Direction</h2><p>Guiding the visual approach of photography projects, including composition, lighting, and overall aesthetic direction, in line with the intended outcome.</p>"
+    },
+    {
+      "name": "Color Grading",
+      "popup_content": "<h2>🎬 Color Grading</h2><p>Adjusting color and tone to achieve visual consistency and support the intended mood, with a focus on clean and natural results.</p>"
+    },
+    {
+      "name": "Vibe Coding",
+      "popup_content": "<h2>💻 Vibe Coding</h2><p>Used to build small tools and prototype simple digital projects. It allows me to test ideas quickly, explore functionality, and develop practical solutions with minimal setup.</p>"
+    }
+  ],
+  "services_config": {
+    "title": "Skills"
+  },
+  "socials": [
+    {
+      "name": "LinkedIn",
+      "svg": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3V10h3v9zm-1.5-10.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 10.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3V10h3v1.765c1.396-2.586 7-2.777 7 2.476v4.759z\"/></svg>",
+      "url": "https://www.linkedin.com/in/amine-elmoufid/"
+    },
+    {
+      "name": "Instagram",
+      "svg": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07m0-2.163c-3.259 0-3.667.014-4.947.072-1.277.058-2.148.261-2.911.558a5.811 5.811 0 00-2.103 1.371A5.82 5.82 0 00.741 4.102c-.297.763-.5 1.634-.558 2.911-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.058 1.277.261 2.148.558 2.911a5.82 5.82 0 001.371 2.103 5.823 5.823 0 002.103 1.371c.763.297 1.634.5 2.911.558 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.277-.058 2.148-.261 2.911-.558a5.82 5.82 0 002.103-1.371 5.823 5.823 0 001.371-2.103c.297-.763.5-1.634.558-2.911.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.058-1.277-.261-2.148-.558-2.911a5.823 5.823 0 00-1.371-2.103 5.823 5.823 0 00-2.103-1.371c-.763-.297-1.634-.5-2.911-.558-1.28-.058-1.688-.072-4.947-.072z\"/></svg>",
+      "url": "https://www.instagram.com/amine_elmoufid/"
+    },
+    {
+      "name": "Portfolio",
+      "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path></svg>",
+      "url": "feed.html"
+    },
+    {
+      "name": "Folders",
+      "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z\"></path></svg>",
+      "url": "amine.ink/"
+    },
+    {
+      "name": "Resume",
+      "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z\"></path><polyline points=\"13 2 13 9 20 9\"></polyline></svg>",
+      "url": "index.html"
+    }
+  ],
+  "spacing": {
+    "baseFs": 11,
+    "headerFs": 52,
+    "headerLh": 1.05,
+    "headerLs": -2,
+    "jobFs": 14,
+    "jobLh": 1.2,
+    "jobLs": 0,
+    "letterSpacing": -0.2,
+    "lineHeight": 0.9,
+    "sectionFs": 18,
+    "sectionLh": 1.1,
+    "sectionLs": -0.5
+  },
+  "tools": [
+    {
+      "desc": "Primary editing tool.",
+      "name": "Premiere Pro",
+      "popup_content": "<h2>🎬 Premiere Pro</h2><p>My primary editing tool for structuring video content. I use it to manage pacing, sequencing, and narrative flow, ensuring each piece is clear, cohesive, and aligned with the intended message.</p>",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg"
+    },
+    {
+      "desc": "Color and refinement.",
+      "name": "DaVinci Resolve",
+      "popup_content": "<h2>🎬 DaVinci Resolve</h2><p>Used for color grading and final visual refinement. I focus on achieving balanced, natural tones and consistent visual atmosphere that support the story without over-processing.</p>",
+      "url": "images/logos/DaVinci%20Resolve.png"
+    },
+    {
+      "desc": "Rapid production.",
+      "name": "CapCut",
+      "popup_content": "<h2>🎬 CapCut</h2><p>A fast and efficient tool for rapid content production. I use it to test ideas, adapt formats quickly, and produce short-form content with minimal friction.</p>",
+      "url": "images/logos/CapCut.png"
+    },
+    {
+      "desc": "Identity building.",
+      "name": "Illustrator",
+      "popup_content": "<h2>🎨 Illustrator</h2><p>Used to build visual identities from the ground up. I create logos, graphic systems, and scalable assets with a focus on clarity and consistency.</p>",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg"
+    },
+    {
+      "desc": "Composition tool.",
+      "name": "Photoshop",
+      "popup_content": "<h2>🎨 Photoshop</h2><p>My tool for image composition and visual refinement. I use it to adjust, combine, and enhance visuals when more control is needed beyond basic editing.</p>",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg"
+    },
+    {
+      "desc": "Photo correction.",
+      "name": "Lightroom",
+      "popup_content": "<h2>🎨 Lightroom</h2><p>Focused on photo correction and consistency. I use it to enhance lighting, color balance, and overall image quality while maintaining a natural look.</p>",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Adobe_Photoshop_Lightroom_CC_logo.svg"
+    },
+    {
+      "desc": "Multi-format content.",
+      "name": "Canva",
+      "popup_content": "<h2>&nbsp;Canva</h2><p>Used for quick production and multi-format content. It allows me to efficiently create clean visuals for presentations, social media, and communication needs.</p>",
+      "url": "images/logos/Canva.png"
+    },
+    {
+      "desc": "Focused workflows.",
+      "name": "Affinity",
+      "popup_content": "<h2>🎨 Affinity (Suite)</h2><p>An alternative design environment I use for focused workflows. It provides strong performance and precision, especially for clean and lightweight projects.</p>",
+      "url": "images/logos/Affinity.png"
+    },
+    {
+      "desc": "Ideation support.",
+      "name": "AI Creative Workflows",
+      "popup_content": "<h2>🤖 AI Creative Workflows</h2><p>I use AI as a support system to accelerate ideation, explore directions, and streamline production. It helps me test concepts quickly and build more efficient creative processes.</p>",
+      "url": "images/logos/AI.png"
+    },
+    {
+      "desc": "Vibe Coding & Prototyping.",
+      "name": "Antigravity",
+      "popup_content": "<h2>✨ Antigravity (Vibe Coding)</h2><p>Used to build small tools and prototype digital projects quickly. I rely on it to turn ideas into functional outputs, test concepts in real conditions, and develop lightweight solutions without complex setup.</p>",
+      "url": "images/logos/Antigravity.png"
+    }
+  ],
+  "tools_config": {
+    "title": "Tools I use"
+  },
+  "works": {
+    "items": [
+      {
+        "image_url": "images/logos/startzone.svg",
+        "popup_content": "<h2>Creative AI Systems Producer</h2><h3>StartZone — Meknès, Morocco</h3><p>Sep 2025 – Dec 2025</p><br><img src=\"assets/startzone.svg\" style=\"width:100%; height:180px; object-fit:contain; background:rgba(255,255,255,0.03); border-radius:12px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.1);\" /><br><p>Contributed to the development of AI-supported creative workflows and digital solutions. Focused on building small tools and experimenting with AI to improve content production processes and ideation.</p><ul><li>Developed and tested AI-driven workflows for creative production</li><li>Built simple tools and prototypes to support internal needs</li><li>Explored applications of AI in content creation and marketing</li><li>Assisted in structuring processes to improve efficiency and consistency</li></ul>"
+      },
+      {
+        "image_url": "images/logos/minhoo.png",
+        "popup_content": "<h2>Founder & Creative Systems Developer</h2><h3>Minhoo — Personal Project</h3><p>2024 – 2025</p><br><img src=\"assets/minhoo.png\" style=\"width:100%; height:180px; object-fit:contain; background:rgba(255,255,255,0.03); border-radius:12px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.1);\" /><br><p>Developing a personal experimentation space focused on building structured approaches to content creation and creative workflows.</p><ul><li>Designed and tested systems for content production and idea generation</li><li>Built small tools and prototypes to support creative processes</li><li>Explored repeatable methods to improve efficiency and consistency in creation</li><li>Applied AI workflows to enhance ideation and execution</li></ul>"
+      },
+      {
+        "image_url": "images/logos/Movenpick.png",
+        "popup_content": "<h2>Brand Creative Strategist &amp; Content Producer</h2><h3>Mövenpick Hotel Marrakech (5★)</h3><p>2025 (111-day intensive residency)</p><br><img src=\"assets/Movenpick.png\" style=\"width:100%; height:180px; object-fit:cover; border-radius:12px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.1);\"><br><p>Managed both the strategic and operational aspects of social media and content production for a luxury hospitality environment. Worked on aligning content with brand standards while maintaining consistent output.</p><ul><li>Planned and executed social media content aligned with brand positioning</li><li>Developed and implemented campaign concepts (e.g. storytelling formats)</li><li>Produced and edited photo and video content</li><li>Managed editorial planning and publishing schedules</li><li>Ensured consistency with luxury hospitality standards in all outputs</li></ul>"
+      }
+    ],
+    "title": "Recent works",
+    "work1_title": "StartZone Career",
+    "work2_title": "Minhoo Personal Project",
+    "work3_title": "Mövenpick Residency"
+  }
+}
