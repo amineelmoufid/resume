@@ -356,7 +356,7 @@ function initBentoWithData(data) {
         serviceArea.innerHTML = serviceItems.map((srv, idx) => {
             const name = typeof srv === 'string' ? srv : srv.name;
             const world = getSkillWorld(name);
-            return `<div class="physics-item pill pill-${world}" data-world="${world}" data-idx="${idx}">${name}</div>`;
+            return `<div class="physics-item pill pill-${world}" data-world="${world}" data-idx="${idx}"><span class="pill-dot dot-${world}"></span>${name}</div>`;
         }).join('');
 
         serviceArea.querySelectorAll('.pill').forEach(pill => {

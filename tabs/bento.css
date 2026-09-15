@@ -484,57 +484,80 @@ body {
 }
 .pill:active { cursor: grabbing; border-color: rgba(255,255,255,0.3); }
 
-/* 4 Worlds Pill Colors */
+/* Subtle Accent Dots inside Pills */
+.pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dot-strategy {
+    background-color: #4ade80;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
+}
+.dot-creator {
+    background-color: #fb923c;
+    box-shadow: 0 0 6px rgba(251, 146, 60, 0.4);
+}
+.dot-tech {
+    background-color: #a78bfa;
+    box-shadow: 0 0 6px rgba(167, 139, 250, 0.4);
+}
+.dot-finance {
+    background-color: #60a5fa;
+    box-shadow: 0 0 6px rgba(96, 165, 250, 0.4);
+}
+
+/* 4 Worlds Pill Colors - Refined, Dark & Elegant */
+.pill {
+    background: #191a1d !important;
+    color: #e4e4e7 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
 .pill.pill-strategy {
-    background: rgba(74, 222, 128, 0.1) !important;
-    border: 1px solid rgba(74, 222, 128, 0.35) !important;
-    color: #4ade80 !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(74, 222, 128, 0.05);
+    border-color: rgba(74, 222, 128, 0.2) !important;
 }
 .pill.pill-strategy:hover,
 .pill.pill-strategy.highlight-active {
-    border-color: rgba(74, 222, 128, 0.85) !important;
-    background: rgba(74, 222, 128, 0.22) !important;
-    box-shadow: 0 6px 20px rgba(74, 222, 128, 0.35), inset 0 0 12px rgba(74, 222, 128, 0.2);
+    border-color: rgba(74, 222, 128, 0.6) !important;
+    background: #1e2520 !important;
+    box-shadow: 0 4px 16px rgba(74, 222, 128, 0.15) !important;
 }
 
 .pill.pill-creator {
-    background: rgba(251, 146, 60, 0.1) !important;
-    border: 1px solid rgba(251, 146, 60, 0.35) !important;
-    color: #fb923c !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(251, 146, 60, 0.05);
+    border-color: rgba(251, 146, 60, 0.2) !important;
 }
 .pill.pill-creator:hover,
 .pill.pill-creator.highlight-active {
-    border-color: rgba(251, 146, 60, 0.85) !important;
-    background: rgba(251, 146, 60, 0.22) !important;
-    box-shadow: 0 6px 20px rgba(251, 146, 60, 0.35), inset 0 0 12px rgba(251, 146, 60, 0.2);
+    border-color: rgba(251, 146, 60, 0.6) !important;
+    background: #25201c !important;
+    box-shadow: 0 4px 16px rgba(251, 146, 60, 0.15) !important;
 }
 
 .pill.pill-tech {
-    background: rgba(167, 139, 250, 0.1) !important;
-    border: 1px solid rgba(167, 139, 250, 0.35) !important;
-    color: #a78bfa !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(167, 139, 250, 0.05);
+    border-color: rgba(167, 139, 250, 0.2) !important;
 }
 .pill.pill-tech:hover,
 .pill.pill-tech.highlight-active {
-    border-color: rgba(167, 139, 250, 0.85) !important;
-    background: rgba(167, 139, 250, 0.22) !important;
-    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.35), inset 0 0 12px rgba(167, 139, 250, 0.2);
+    border-color: rgba(167, 139, 250, 0.6) !important;
+    background: #221f26 !important;
+    box-shadow: 0 4px 16px rgba(167, 139, 250, 0.15) !important;
 }
 
 .pill.pill-finance {
-    background: rgba(96, 165, 250, 0.1) !important;
-    border: 1px solid rgba(96, 165, 250, 0.35) !important;
-    color: #60a5fa !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(96, 165, 250, 0.05);
+    border-color: rgba(96, 165, 250, 0.2) !important;
 }
 .pill.pill-finance:hover,
 .pill.pill-finance.highlight-active {
-    border-color: rgba(96, 165, 250, 0.85) !important;
-    background: rgba(96, 165, 250, 0.22) !important;
-    box-shadow: 0 6px 20px rgba(96, 165, 250, 0.35), inset 0 0 12px rgba(96, 165, 250, 0.2);
+    border-color: rgba(96, 165, 250, 0.6) !important;
+    background: #1c2128 !important;
+    box-shadow: 0 4px 16px rgba(96, 165, 250, 0.15) !important;
 }
 
 /* Pill Dimensions are now handled by content + padding */
