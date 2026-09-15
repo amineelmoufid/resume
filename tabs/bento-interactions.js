@@ -337,11 +337,26 @@ function initBentoWithData(data) {
     const defaultServices = ['Webflow', 'SEO', 'Framer', 'UX/UI Design', 'Branding', '3D Design', 'Social Media'];
     const serviceItems = srvData.length > 0 ? srvData : defaultServices.map(s => ({ name: s, popup_content: "" }));
     
+    function getSkillWorld(name) {
+        const n = (name || '').toLowerCase();
+        if (n.includes('vibe') || n.includes('coding') || n.includes('code') || n.includes('ai') || n.includes('tech') || n.includes('webflow') || n.includes('framer')) {
+            return 'tech';
+        }
+        if (n.includes('financial') || n.includes('engineer') || n.includes('analytical') || n.includes('data') || n.includes('seo') || n.includes('editorial') || n.includes('planning')) {
+            return 'finance';
+        }
+        if (n.includes('brand') || n.includes('strategy') || n.includes('concept') || n.includes('ecosystem') || n.includes('consulting') || n.includes('narrative')) {
+            return 'strategy';
+        }
+        return 'creator';
+    }
+
     const serviceArea = document.getElementById('services-physics');
     if (serviceArea) {
         serviceArea.innerHTML = serviceItems.map((srv, idx) => {
             const name = typeof srv === 'string' ? srv : srv.name;
-            return `<div class="physics-item pill" data-idx="${idx}">${name}</div>`;
+            const world = getSkillWorld(name);
+            return `<div class="physics-item pill pill-${world}" data-world="${world}" data-idx="${idx}">${name}</div>`;
         }).join('');
 
         serviceArea.querySelectorAll('.pill').forEach(pill => {
