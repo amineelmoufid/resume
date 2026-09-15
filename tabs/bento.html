@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
-    <link rel="stylesheet" href="bento.css?v=7">
+    <link rel="stylesheet" href="bento.css?v=8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -92,7 +92,7 @@
                 </div>
                 
                 <div class="fw-right">
-                    <div class="fw-list-item">
+                    <div class="fw-list-item" data-world="strategy">
                         <span class="fw-num strategy">01</span>
                         <div class="fw-item-text">
                             <h3>Creative Strategist</h3>
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     
-                    <div class="fw-list-item">
+                    <div class="fw-list-item" data-world="creator">
                         <span class="fw-num create">02</span>
                         <div class="fw-item-text">
                             <h3>Content Creator</h3>
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     
-                    <div class="fw-list-item">
+                    <div class="fw-list-item" data-world="tech">
                         <span class="fw-num build">03</span>
                         <div class="fw-item-text">
                             <h3>Creative Technologist</h3>
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                     
-                    <div class="fw-list-item">
+                    <div class="fw-list-item" data-world="finance">
                         <span class="fw-num analyse">04</span>
                         <div class="fw-item-text">
                             <h3>Financial Engineer</h3>
@@ -127,10 +127,10 @@
             </div>
 
             <div class="fw-footer-new">
-                <p>My work sits between <strong>strategy, creativity, and technology.</strong><br>
-                With a background in financial engineering, I combine analytical thinking
-                with hands-on creative work across branding, content, visual production,
-                AI, and digital tools. I move from ideas and strategy to execution,
+                <p id="fw-paragraph">My work sits between <span class="fw-target" data-world="strategy">strategy</span>, <span class="fw-target" data-world="creator">creativity</span>, and <span class="fw-target" data-world="tech">technology</span>.<br>
+                With a background in <span class="fw-target" data-world="finance">financial engineering, I combine analytical thinking</span>
+                with hands-on creative work across <span class="fw-target" data-world="strategy">branding</span>, <span class="fw-target" data-world="creator">content, visual production</span>,
+                <span class="fw-target" data-world="tech">AI, and digital tools</span>. I move from <span class="fw-target" data-world="strategy">ideas and strategy to execution</span>,
                 building things that are both creative and practical.</p>
                 
                 <div class="fw-footer-note-new">
@@ -263,6 +263,41 @@
 
     <script src="bento-physics.js"></script>
     <script type="module" src="bento-interactions.js"></script>
+    <script>
+        (function() {
+            function initFourWorlds() {
+                const listItems = document.querySelectorAll('.fw-list-item[data-world]');
+                const targets = document.querySelectorAll('.fw-target[data-world]');
+                const paragraph = document.getElementById('fw-paragraph');
+                if (!listItems.length || !targets.length) return;
+
+                listItems.forEach(item => {
+                    const world = item.dataset.world;
+                    item.addEventListener('mouseenter', () => {
+                        if (paragraph) paragraph.classList.add('has-active-target');
+                        targets.forEach(t => {
+                            if (t.dataset.world === world) {
+                                t.classList.add(`active-${world}`, 'active-target');
+                            }
+                        });
+                    });
+                    item.addEventListener('mouseleave', () => {
+                        if (paragraph) paragraph.classList.remove('has-active-target');
+                        targets.forEach(t => {
+                            if (t.dataset.world === world) {
+                                t.classList.remove(`active-${world}`, 'active-target');
+                            }
+                        });
+                    });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initFourWorlds);
+            } else {
+                initFourWorlds();
+            }
+        })();
+    </script>
     <!-- Gravity Indicator -->
     <div id="gravity-indicator"></div>
 </body>
